@@ -72,3 +72,28 @@ class FilterListManager(GeneralPlugin):
     def __file__(self):
         """Please leave this method unchanged"""
         return __file__
+
+
+class Filter(object):
+    """Filter is an object that maintains data elements for Glyphs application filter lists.
+       It is instantiated with a new filter list name and list elements are defined with
+       a class method"""
+    def __init__(self, name):
+        self.comment_delimiters = ("#", "/")
+        self.name = name
+        self.list = []
+
+    def define_list_with_newline_delimited_text(self, text):
+        """Filter class method that defines a Filter object with parsed data from newline-
+           delimited text files of list elements"""
+        raw_code_point_list = text.splitlines()
+        filtered_code_point_list = []
+        for item in raw_code_point_list:
+            test_item = item.strip()
+            if len(test_item) == 0:  # discard blank lines in definition file
+                pass
+            elif test_item[0] in self.comment_delimiters:  # discard comment lines in definition file
+                pass
+            else:
+                filtered_code_point_list.append(test_item)
+        self.list = filtered_code_point_list
