@@ -14,6 +14,7 @@
 import objc
 import os
 import plistlib
+import subprocess
 import sys
 
 from GlyphsApp import *
@@ -26,24 +27,31 @@ class FilterListManager(GeneralPlugin):
         # TODO: modify localized versions of strings
         self.update_name = Glyphs.localize({'en': u'Update Filter Lists', 'de': u'XXXX'})
         self.restoredefault_name = Glyphs.localize({'en': u'Restore Default Filter Lists', 'de': u'XXXX'})
+        self.opendir_name = Glyphs.localize({'en': u'Open GlyphsFilters Directory', 'de': u'XXXX'})
 
     def start(self):
         try:
             # new API in Glyphs 2.3.1-910
             new_update_menu_item = NSMenuItem(self.update_name, self.update_filters)
             new_restore_menu_item = NSMenuItem(self.restoredefault_name, self.restore_filters)
+            new_opendir_menu_item = NSMenuItem(self.opendir_name, self.open_glyphsfilters_directory)
             Glyphs.menu[EDIT_MENU].append(new_update_menu_item)
             Glyphs.menu[EDIT_MENU].append(new_restore_menu_item)
+            Glyphs.menu[EDIT_MENU].append(new_opendir_menu_item)
         except Exception:
             main_menu = Glyphs.mainMenu()
             update_selector = objc.selector(self.update_filters, signature='v@:@')
             restore_selector = objc.selector(self.restore_filters, signature='v@:@')
+            open_selector = objc.selector(self.open_glyphsfilters_directory, signature='v@:@')
             new_update_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(self.update_name, update_selector, "")
             new_restore_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(self.restore_name, restore_selector, "")
+            new_open_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(self.opendir_name, open_selector, "")
             new_update_menu_item.setTarget_(self)
             main_menu.itemWithTag_(5).submenu().addItem_(new_update_menu_item)
             new_restore_menu_item.setTarget_(self)
             main_menu.itemWithTag_(5).submenu().addItem_(new_restore_menu_item)
+            new_open_menu_item.setTarget_(self)
+            main_menu.itemWithTag_(5).submenu().addItem_(new_open_menu_item)
 
     def update_filters(self, sender):
         """Perform the list filter update"""
@@ -96,6 +104,13 @@ class FilterListManager(GeneralPlugin):
         default_filters = plistlib.readPlist(read_path)
         plistlib.writePlist(default_filters, write_path)
         Glyphs.showNotification('Filter List Manager', 'The default filter list restoration was successful.  Please quit and restart Glyphs.')
+
+    def open_glyphsfilters_directory(self, sender):
+        glyphs_filters_dirpath = os.path.join(os.path.expanduser("~"), "GlyphsFilters")
+        if not os.path.isdir(glyphs_filters_dirpath):
+            Glyphs.showNotification('Filter List Manager', 'Unable to find ~/GlyphsFilters directory. Please create this path.')
+        else:
+            subprocess.call(["open", glyphs_filters_dirpath])
 
     def filter_directory_is_present(self):
         if not os.path.isdir(os.path.join(os.path.expanduser("~"), "GlyphsFilters")):
