@@ -62,5 +62,5 @@ ubreve
 
 7) Select Edit > Restore Default Filter Lists.  Close Glyphs and reopen.  Check your filter list name list on the left side of the editor window and confirm that the Mac Roman, Windows 1252, and ASCII lists are there and contain the expected Unicode code points.
 
-That's it for the tests.  If you don't need to use any updated filters, replace the file on the path `~/Libary/Application Support/Glyphs/CustomFilter.plist` with the backup file that you made before you started these tests. Quit and reopen Glyphs to view your restored default filter lists.
+That's it for the tests.  If you don't need to use any updated filters, replace the file on the path `~/Libary/Application Support/Glyphs/CustomFilter.plist` with the backup file that you made before you started these tests. Quit and reopen Glyphs to view your restored default filter lists.  Uninstall the testing plugin by deleting the directory on the path `~/Libary/Application Support/Glyphs/Plugins/FilterListManager.glyphsPlugin`.
 
