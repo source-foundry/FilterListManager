@@ -14,6 +14,7 @@
 import objc
 import os
 import plistlib
+import shutil
 import subprocess
 import sys
 
@@ -64,7 +65,15 @@ class FilterListManager(GeneralPlugin):
         previous_plist_data = plistlib.readPlist(plist_path)
         new_plist_list = []  # storage data structure for new plist file definitions
 
-        # TODO: backup old plist file
+        # backup existing plist file
+        previous_plist_backup_dir = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "backup")
+        previous_plist_backup_path = os.path.join(previous_plist_backup_dir, "CustomFilter.plist")
+
+        if os.path.exists(previous_plist_backup_dir):
+            shutil.move(plist_path, previous_plist_backup_path)
+        else:
+            os.makedirs(previous_plist_backup_dir)
+            shutil.move(plist_path, previous_plist_backup_path)
 
         # Begin update
         local_filter_definitions_list = self.get_local_filter_definitions_list()
@@ -125,8 +134,15 @@ class FilterListManager(GeneralPlugin):
             # return an empty list if the directory is not found
             return []
         else:
-            definitions_file_list = [f for f in os.listdir(filter_definition_dir_path) if
+            raw_definitions_file_list = [f for f in os.listdir(filter_definition_dir_path) if
                                      os.path.isfile(os.path.join(filter_definition_dir_path, f))]
+            definitions_file_list = []
+            # filter list for dotfiles.  This eliminates macOS .DS_Store files that lead to errors during processing
+            for definition_file in raw_definitions_file_list:
+                if definition_file[0] == ".":
+                    pass
+                else:
+                    definitions_file_list.append(definition_file)
             for definition_file in definitions_file_list:
                 definition_path_list = definition_file.split(".")
                 # define the filter list name as the file name
