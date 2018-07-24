@@ -4,6 +4,7 @@
 #
 #
 #   Filter List Manager
+#   A plugin for the Glyphs font editor
 #   Copyright 2018 Christopher Simpkins
 #   Apache License 2.0
 #
@@ -18,6 +19,7 @@ import sys
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 
+# TODO: add logging of errors
 
 class FilterListManager(GeneralPlugin):
     def settings(self):
@@ -45,15 +47,47 @@ class FilterListManager(GeneralPlugin):
 
     def update_filters(self, sender):
         """Perform the list filter update"""
-        # test to confirm that the expected update directory is present
+        # Expected filter definitions directory test
         if not self.filter_directory_is_present():
             Glyphs.showNotification('Filter List Manager', 'ERROR: Unable to locate GlyphsFilter directory!')
-        else:
-            # BEGIN UPDATE
-            pass
-            # TODO
+            return 0
 
-            Glyphs.showNotification('Filter List Manager', 'The filter list updates were successful.  Please quit and restart Glyphs.')
+        plist_path = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Glyphs", "CustomFilter.plist")
+        previous_plist_data = plistlib.readPlist(plist_path)
+        new_plist_list = []  # storage data structure for new plist file definitions
+
+        # TODO: backup old plist file
+
+        # Begin update
+        local_filter_definitions_list = self.get_local_filter_definitions_list()
+        # TODO: add support for remote filter files
+        plist_filter_definitions_list = []
+
+        # create list with plist formatted data
+        for a_filter in local_filter_definitions_list:
+            filter_dict = {}
+            filter_dict["name"] = a_filter.name
+            filter_dict["list"] = a_filter.list
+            plist_filter_definitions_list.append(filter_dict)
+
+        if len(local_filter_definitions_list) == 0:
+            # TODO: modify this test when add support for remote files
+            Glyphs.showNotification('Filter List Manager', 'Unable to identify new filter list definition files. No changes were made.')
+            return 0
+
+        for previous_definition in previous_plist_data:
+            if "list" in previous_definition:
+                pass
+            else:
+                new_plist_list.append(previous_definition)
+
+        # add new data that was read from definition files to Python list
+        for new_definition in plist_filter_definitions_list:
+            new_plist_list.append(new_definition)
+
+        plistlib.writePlist(new_plist_list, plist_path)
+
+        Glyphs.showNotification('Filter List Manager', 'The filter list updates were successful.  Please quit and restart Glyphs.')
 
     def restore_filters(self, sender):
         """Perform restore of default list filters"""
@@ -68,6 +102,28 @@ class FilterListManager(GeneralPlugin):
             return False
         else:
             return True
+
+    def get_local_filter_definitions_list(self):
+        local_definitions_list = []
+        filter_definition_dir_path = os.path.join(os.path.expanduser("~"), "GlyphsFilters")
+        if not os.path.isdir(filter_definition_dir_path):
+            # return an empty list if the directory is not found
+            return []
+        else:
+            definitions_file_list = [f for f in os.listdir(filter_definition_dir_path) if
+                                     os.path.isfile(os.path.join(filter_definition_dir_path, f))]
+            for definition_file in definitions_file_list:
+                definition_path_list = definition_file.split(".")
+                # define the filter list name as the file name
+                new_filter = Filter(definition_path_list[0])
+                with open(os.path.join(filter_definition_dir_path, definition_file)) as f:
+                    # define the filter object with the definitions in the text data
+                    text = f.read()
+                    new_filter.define_list_with_newline_delimited_text(text)
+
+                local_definitions_list.append(new_filter)
+
+        return local_definitions_list
 
     def __file__(self):
         """Please leave this method unchanged"""
