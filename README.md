@@ -7,7 +7,7 @@ Pre-release testing.  Not suitable for production use yet.
 
 ## Testers
 
-**NOTE**: Please backup your ~/Libary/Application Support/Glyphs/CustomFilter.plist file before you use this pre-release version of the plugin!
+**NOTE**: Please backup your `~/Libary/Application Support/Glyphs/CustomFilter.plist` file before you use this pre-release version of the plugin!
 
 ### Install
 1. Download the source code repository
