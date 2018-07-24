@@ -29,7 +29,7 @@ Pre-release testing.  Not suitable for production use yet.
 
 4) When you select Edit > Open GlyphsFilters Directory in Glyphs, you should find that the GlyphsFilters directory now opens to an empty directory in your macOS Finder
 
-5) Add one or more filter list definition files that are specified as follows:
+5) Add one or more filter list definition files to the `~/GlyphsFilters` directory that are specified as follows:
 
     - define your filter list name using the filename (e.g. Esperanto.txt yields filter list 'Esperanto')
     - use a newline between each definition
