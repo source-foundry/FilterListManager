@@ -10,9 +10,10 @@ Pre-release testing.  Not suitable for production use yet.
 **NOTE**: Please backup your `~/Libary/Application Support/Glyphs/CustomFilter.plist` file before you use this pre-release version of the plugin!
 
 ### Install
-1. [Download the source code repository](https://github.com/source-foundry/FilterListManager/archive/master.zip)
-2. Double-click `FilterListManager.glyphsPlugin` in the root of the source directory
-3. Accept the plugin install dialogs that are displayed in the Glyphs application
+1. [Download the source code repository](https://github.com/source-foundry/FilterListManager/releases/latest)
+2. Unpack the downloaded archive file
+3. Double-click `FilterListManager.glyphsPlugin` in the root of the source directory
+4. Accept the plugin install dialogs that are displayed in the Glyphs application
 
 ### Tests
 
