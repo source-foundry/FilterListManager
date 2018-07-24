@@ -1,2 +1,2 @@
-# FilterListManager
-Glyphs application filter list manager plugin
+# Filter List Manager
+Glyphs font editor filter list manager plugin
