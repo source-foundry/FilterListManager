@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleVersion</key>
-	<string>10</string>
+	<string>12</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.0</string>
+	<string>0.1.2</string>
 	<key>UpdateFeedURL</key>
 	<string>https://raw.githubusercontent.com/source-foundry/FilterListManager/master/FilterListManager.glyphsPlugin/Contents/Info.plist</string>
 	<key>productPageURL</key>
@@ -27,7 +27,7 @@
 	<key>productReleaseNotes</key>
 	<string>Pre-release testing build</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2018 Christopher Simpkins\nApache License 2.0</string>
+	<string>Copyright 2018 Christopher Simpkins, Apache License 2.0</string>
 	<key>NSPrincipalClass</key>
 	<string>FilterListManager</string>
 	<key>PyMainFileNames</key>
