@@ -34,44 +34,51 @@
 
 import os
 import plistlib
+import sys
 
 
 def main():
-    # default paths
-    glyphs_plist_path = os.path.join(
-        os.path.expanduser("~"),
-        "Library",
-        "Application Support",
-        "Glyphs",
-        "CustomFilter.plist",
-    )
+    try:
+        # default paths
+        glyphs_plist_path = os.path.join(
+            os.path.expanduser("~"),
+            "Library",
+            "Application Support",
+            "Glyphs",
+            "CustomFilter.plist",
+        )
 
-    flm_definitions_directory_path = os.path.join(
-        os.path.expanduser("~"),
-        "GlyphsFilters"
-    )
+        flm_definitions_directory_path = os.path.join(
+            os.path.expanduser("~"),
+            "GlyphsFilters"
+        )
 
-    if not os.path.isdir(flm_definitions_directory_path):
-        os.makedirs(flm_definitions_directory_path)
+        if not os.path.isdir(flm_definitions_directory_path):
+            os.makedirs(flm_definitions_directory_path)
 
-    with open(glyphs_plist_path, "rb") as f:
-        filters_data = plistlib.load(f)
-        for filter_dict in filters_data:
-            if "list" in filter_dict:
-                # define filter file name and filter list contents
-                filter_name = filter_dict["name"]
-                filter_list = filter_dict["list"]
+        with open(glyphs_plist_path, "rb") as f:
+            filters_data = plistlib.load(f)
+            for filter_dict in filters_data:
+                if "list" in filter_dict:
+                    # define filter file name and filter list contents
+                    filter_name = filter_dict["name"]
+                    filter_list = filter_dict["list"]
 
-                base_filepath = filter_name + ".txt"
-                outfile_path = os.path.join(flm_definitions_directory_path, base_filepath)
+                    base_filepath = filter_name + ".txt"
+                    outfile_path = os.path.join(flm_definitions_directory_path, base_filepath)
 
-                # create newline-delimited file format
-                outfile_text = "// " + filter_name + " filter" + os.linesep + os.linesep
-                for glyph_name in filter_list:
-                    outfile_text += glyph_name + os.linesep
+                    # create newline-delimited file format
+                    outfile_text = "// " + filter_name + " filter" + os.linesep + os.linesep
+                    for glyph_name in filter_list:
+                        outfile_text += glyph_name + os.linesep
 
-                with open(outfile_path, "w") as w:
-                    w.write(outfile_text)
+                    with open(outfile_path, "w") as w:
+                        w.write(outfile_text)
+                        print(filter_name + " filter list exported...")
+
+        print("Export complete!")
+    except Exception as e:
+        sys.stderr.write("[ERROR] There was an error during the export attempt. " + str(e) + os.linesep)
 
 
 if __name__ == "__main__":
