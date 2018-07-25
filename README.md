@@ -18,7 +18,7 @@ Pre-release testing.  Not suitable for production use yet.
 
 ### Export Existing Glyphs Filter Lists for Use with the FLM Plugin
 
-If you would like to export your existing Glyphs filter lists as definition files that work with this plugin, use the [exportfilters.py Python script](https://github.com/source-foundry/FilterListManager/blob/master/tools/exportfilters.py) located in the `tools` directory of this repository BEFORE YOU PERFORM THE FIRST UPDATE with the FLM plugin.
+If you would like to export your existing Glyphs filter lists as definition files that work with this plugin, use the [exportfilters.py Python script](https://github.com/source-foundry/FilterListManager/blob/master/tools/exportfilters.py) located in the `tools` directory of this repository BEFORE YOU PERFORM THE FIRST UPDATE with the FLM plugin.  See Usage documentation in the header of the script for details.
 
 ### Tests
 
