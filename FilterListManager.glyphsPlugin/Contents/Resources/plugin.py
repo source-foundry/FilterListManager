@@ -16,7 +16,6 @@ import os
 import plistlib
 import shutil
 import subprocess
-import sys
 
 from GlyphsApp import *
 from GlyphsApp.plugins import *
