@@ -81,6 +81,7 @@ def main():
         print("You can find the definition files in the directory ~/GlyphsFilters")
     except Exception as e:
         sys.stderr.write("[ERROR] There was an error during the export attempt. " + str(e) + os.linesep)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
