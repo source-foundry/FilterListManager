@@ -22,30 +22,49 @@ from GlyphsApp.plugins import *
 
 # TODO: add logging of errors
 
+
 class FilterListManager(GeneralPlugin):
     def settings(self):
         # TODO: modify localized versions of strings
-        self.update_name = Glyphs.localize({'en': u'Update Filter Lists', 'de': u'XXXX'})
-        self.restoredefault_name = Glyphs.localize({'en': u'Restore Default Filter Lists', 'de': u'XXXX'})
-        self.opendir_name = Glyphs.localize({'en': u'Open GlyphsFilters Directory', 'de': u'XXXX'})
+        self.update_name = Glyphs.localize(
+            {"en": u"Update Filter Lists", "de": u"XXXX"}
+        )
+        self.restoredefault_name = Glyphs.localize(
+            {"en": u"Restore Default Filter Lists", "de": u"XXXX"}
+        )
+        self.opendir_name = Glyphs.localize(
+            {"en": u"Open GlyphsFilters Directory", "de": u"XXXX"}
+        )
 
     def start(self):
         try:
             # new API in Glyphs 2.3.1-910
             new_update_menu_item = NSMenuItem(self.update_name, self.update_filters)
-            new_restore_menu_item = NSMenuItem(self.restoredefault_name, self.restore_filters)
-            new_opendir_menu_item = NSMenuItem(self.opendir_name, self.open_glyphsfilters_directory)
+            new_restore_menu_item = NSMenuItem(
+                self.restoredefault_name, self.restore_filters
+            )
+            new_opendir_menu_item = NSMenuItem(
+                self.opendir_name, self.open_glyphsfilters_directory
+            )
             Glyphs.menu[EDIT_MENU].append(new_update_menu_item)
             Glyphs.menu[EDIT_MENU].append(new_restore_menu_item)
             Glyphs.menu[EDIT_MENU].append(new_opendir_menu_item)
         except Exception:
             main_menu = Glyphs.mainMenu()
-            update_selector = objc.selector(self.update_filters, signature='v@:@')
-            restore_selector = objc.selector(self.restore_filters, signature='v@:@')
-            open_selector = objc.selector(self.open_glyphsfilters_directory, signature='v@:@')
-            new_update_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(self.update_name, update_selector, "")
-            new_restore_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(self.restore_name, restore_selector, "")
-            new_open_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(self.opendir_name, open_selector, "")
+            update_selector = objc.selector(self.update_filters, signature="v@:@")
+            restore_selector = objc.selector(self.restore_filters, signature="v@:@")
+            open_selector = objc.selector(
+                self.open_glyphsfilters_directory, signature="v@:@"
+            )
+            new_update_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+                self.update_name, update_selector, ""
+            )
+            new_restore_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+                self.restore_name, restore_selector, ""
+            )
+            new_open_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
+                self.opendir_name, open_selector, ""
+            )
             new_update_menu_item.setTarget_(self)
             main_menu.itemWithTag_(5).submenu().addItem_(new_update_menu_item)
             new_restore_menu_item.setTarget_(self)
@@ -57,16 +76,28 @@ class FilterListManager(GeneralPlugin):
         """Perform the list filter update"""
         # Expected filter definitions directory test
         if not self.filter_directory_is_present():
-            Glyphs.showNotification('Filter List Manager', 'ERROR: Unable to locate GlyphsFilter directory!')
+            Glyphs.showNotification(
+                "Filter List Manager", "ERROR: Unable to locate GlyphsFilter directory!"
+            )
             return 0
 
-        plist_path = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Glyphs", "CustomFilter.plist")
+        plist_path = os.path.join(
+            os.path.expanduser("~"),
+            "Library",
+            "Application Support",
+            "Glyphs",
+            "CustomFilter.plist",
+        )
         previous_plist_data = plistlib.readPlist(plist_path)
         new_plist_list = []  # storage data structure for new plist file definitions
 
         # backup existing plist file
-        previous_plist_backup_dir = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "backup")
-        previous_plist_backup_path = os.path.join(previous_plist_backup_dir, "CustomFilter.plist")
+        previous_plist_backup_dir = os.path.join(
+            os.path.expanduser("~"), "GlyphsFilters", "backup"
+        )
+        previous_plist_backup_path = os.path.join(
+            previous_plist_backup_dir, "CustomFilter.plist"
+        )
 
         if os.path.exists(previous_plist_backup_dir):
             shutil.move(plist_path, previous_plist_backup_path)
@@ -88,7 +119,10 @@ class FilterListManager(GeneralPlugin):
 
         if len(local_filter_definitions_list) == 0:
             # TODO: modify this test when add support for remote files
-            Glyphs.showNotification('Filter List Manager', 'Unable to identify new filter list definition files. No changes were made.')
+            Glyphs.showNotification(
+                "Filter List Manager",
+                "Unable to identify new filter list definition files. No changes were made.",
+            )
             return 0
 
         for previous_definition in previous_plist_data:
@@ -103,20 +137,45 @@ class FilterListManager(GeneralPlugin):
 
         plistlib.writePlist(new_plist_list, plist_path)
 
-        Glyphs.showNotification('Filter List Manager', 'The filter list updates were successful.  Please quit and restart Glyphs.')
+        Glyphs.showNotification(
+            "Filter List Manager",
+            "The filter list updates were successful.  Please quit and restart Glyphs.",
+        )
 
     def restore_filters(self, sender):
         """Perform restore of default list filters"""
-        write_path = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Glyphs", "CustomFilter.plist")
-        read_path = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Glyphs", "Plugins", "FilterListManager.glyphsPlugin", "Contents", "Resources", "CustomFilter.plist")
+        write_path = os.path.join(
+            os.path.expanduser("~"),
+            "Library",
+            "Application Support",
+            "Glyphs",
+            "CustomFilter.plist",
+        )
+        read_path = os.path.join(
+            os.path.expanduser("~"),
+            "Library",
+            "Application Support",
+            "Glyphs",
+            "Plugins",
+            "FilterListManager.glyphsPlugin",
+            "Contents",
+            "Resources",
+            "CustomFilter.plist",
+        )
         default_filters = plistlib.readPlist(read_path)
         plistlib.writePlist(default_filters, write_path)
-        Glyphs.showNotification('Filter List Manager', 'The default filter list restoration was successful.  Please quit and restart Glyphs.')
+        Glyphs.showNotification(
+            "Filter List Manager",
+            "The default filter list restoration was successful.  Please quit and restart Glyphs.",
+        )
 
     def open_glyphsfilters_directory(self, sender):
         glyphs_filters_dirpath = os.path.join(os.path.expanduser("~"), "GlyphsFilters")
         if not os.path.isdir(glyphs_filters_dirpath):
-            Glyphs.showNotification('Filter List Manager', 'Unable to find ~/GlyphsFilters directory. Please create this path.')
+            Glyphs.showNotification(
+                "Filter List Manager",
+                "Unable to find ~/GlyphsFilters directory. Please create this path.",
+            )
         else:
             subprocess.call(["open", glyphs_filters_dirpath])
 
@@ -128,13 +187,18 @@ class FilterListManager(GeneralPlugin):
 
     def get_local_filter_definitions_list(self):
         local_definitions_list = []
-        filter_definition_dir_path = os.path.join(os.path.expanduser("~"), "GlyphsFilters")
+        filter_definition_dir_path = os.path.join(
+            os.path.expanduser("~"), "GlyphsFilters"
+        )
         if not os.path.isdir(filter_definition_dir_path):
             # return an empty list if the directory is not found
             return []
         else:
-            raw_definitions_file_list = [f for f in os.listdir(filter_definition_dir_path) if
-                                     os.path.isfile(os.path.join(filter_definition_dir_path, f))]
+            raw_definitions_file_list = [
+                f
+                for f in os.listdir(filter_definition_dir_path)
+                if os.path.isfile(os.path.join(filter_definition_dir_path, f))
+            ]
             definitions_file_list = []
             # filter list for dotfiles.  This eliminates macOS .DS_Store files that lead to errors during processing
             for definition_file in raw_definitions_file_list:
@@ -146,7 +210,9 @@ class FilterListManager(GeneralPlugin):
                 definition_path_list = definition_file.split(".")
                 # define the filter list name as the file name
                 new_filter = Filter(definition_path_list[0])
-                with open(os.path.join(filter_definition_dir_path, definition_file)) as f:
+                with open(
+                    os.path.join(filter_definition_dir_path, definition_file)
+                ) as f:
                     # define the filter object with the definitions in the text data
                     text = f.read()
                     new_filter.define_list_with_newline_delimited_text(text)
@@ -164,6 +230,7 @@ class Filter(object):
     """Filter is an object that maintains data elements for Glyphs application filter lists.
        It is instantiated with a new filter list name and list elements are defined with
        a class method"""
+
     def __init__(self, name):
         self.comment_delimiters = ("#", "/")
         self.name = name
@@ -178,7 +245,9 @@ class Filter(object):
             test_item = item.strip()
             if len(test_item) == 0:  # discard blank lines in definition file
                 pass
-            elif test_item[0] in self.comment_delimiters:  # discard comment lines in definition file
+            elif (
+                test_item[0] in self.comment_delimiters
+            ):  # discard comment lines in definition file
                 pass
             else:
                 filtered_code_point_list.append(test_item)
