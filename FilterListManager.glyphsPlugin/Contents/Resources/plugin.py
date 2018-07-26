@@ -16,6 +16,8 @@ import os
 import plistlib
 import shutil
 import subprocess
+import urllib2
+import urlparse
 
 from GlyphsApp import *
 from GlyphsApp.plugins import *
@@ -105,33 +107,48 @@ class FilterListManager(GeneralPlugin):
             os.makedirs(previous_plist_backup_dir)
             shutil.move(plist_path, previous_plist_backup_path)
 
-        # Begin update
+        # Begin update process
         local_filter_definitions_list = self.get_local_filter_definitions_list()
-        # TODO: add support for remote filter files
+        remote_filter_definitions_list = self.get_remote_filter_definitions_list()
         plist_filter_definitions_list = []
 
-        # create list with plist formatted data
-        for a_filter in local_filter_definitions_list:
+        # create list with data structure that is formatted
+        # so that it can be translated to a plist file on write
+        for local_filter in local_filter_definitions_list:
             filter_dict = {}
-            filter_dict["name"] = a_filter.name
-            filter_dict["list"] = a_filter.list
+            filter_dict["name"] = local_filter.name
+            filter_dict["list"] = local_filter.list
             plist_filter_definitions_list.append(filter_dict)
 
-        if len(local_filter_definitions_list) == 0:
-            # TODO: modify this test when add support for remote files
+        for remote_filter in remote_filter_definitions_list:
+            filter_dict = {}
+            filter_dict["name"] = remote_filter.name
+            filter_dict["list"] = remote_filter.list
+            plist_filter_definitions_list.append(filter_dict)
+
+        # confirm that at least one definition was parsed from the definition files
+        # if not, abort
+        if (
+            len(local_filter_definitions_list) == 0
+            and len(remote_filter_definitions_list) == 0
+        ):
             Glyphs.showNotification(
                 "Filter List Manager",
                 "Unable to identify new filter list definition files. No changes were made.",
             )
             return 0
 
+        # filter out previous filter list contents in the CustomFilter.plist
+        # file and keep previous non-filter list contents
         for previous_definition in previous_plist_data:
             if "list" in previous_definition:
                 pass
             else:
                 new_plist_list.append(previous_definition)
 
-        # add new data that was read from definition files to Python list
+        # add new data that was read from local and remote
+        # definition files to a data format that translates
+        # to a plist file
         for new_definition in plist_filter_definitions_list:
             new_plist_list.append(new_definition)
 
@@ -193,33 +210,58 @@ class FilterListManager(GeneralPlugin):
         if not os.path.isdir(filter_definition_dir_path):
             # return an empty list if the directory is not found
             return []
-        else:
-            raw_definitions_file_list = [
-                f
-                for f in os.listdir(filter_definition_dir_path)
-                if os.path.isfile(os.path.join(filter_definition_dir_path, f))
-            ]
-            definitions_file_list = []
-            # filter list for dotfiles.  This eliminates macOS .DS_Store files that lead to errors during processing
-            for definition_file in raw_definitions_file_list:
-                if definition_file[0] == ".":
-                    pass
-                else:
-                    definitions_file_list.append(definition_file)
-            for definition_file in definitions_file_list:
-                definition_path_list = definition_file.split(".")
-                # define the filter list name as the file name
-                new_filter = Filter(definition_path_list[0])
-                with open(
-                    os.path.join(filter_definition_dir_path, definition_file)
-                ) as f:
-                    # define the filter object with the definitions in the text data
-                    text = f.read()
-                    new_filter.define_list_with_newline_delimited_text(text)
 
-                local_definitions_list.append(new_filter)
+        raw_definitions_file_list = [
+            f
+            for f in os.listdir(filter_definition_dir_path)
+            if os.path.isfile(os.path.join(filter_definition_dir_path, f))
+        ]
+        definitions_file_list = []
+        # filter list for dotfiles.  This eliminates macOS .DS_Store files that lead to errors during processing
+        for definition_file in raw_definitions_file_list:
+            if definition_file[0] == ".":
+                pass
+            else:
+                definitions_file_list.append(definition_file)
+        for definition_file in definitions_file_list:
+            definition_path_list = definition_file.split(".")
+            # define the filter list name as the file name
+            new_filter = Filter(definition_path_list[0])
+            with open(os.path.join(filter_definition_dir_path, definition_file)) as f:
+                # define the filter object with the definitions in the text data
+                text = f.read()
+                new_filter.define_list_with_newline_delimited_text(text)
+
+            local_definitions_list.append(new_filter)
 
         return local_definitions_list
+
+    def get_remote_filter_definitions_list(self):
+        remote_definitions_list = []
+        remote_filter_definitions_path = os.path.join(
+            os.path.expanduser("~"), "GlyphsFilters", "remote", "remotedefs.txt"
+        )
+        if not os.path.isfile(remote_filter_definitions_path):
+            return []
+
+        with open(remote_filter_definitions_path) as f:
+            for line in f:
+                url = line.strip()
+                if len(url) == 0:
+                    pass
+                elif url[0] in ("#", "/"):
+                    pass
+                else:
+                    parsed_url = urlparse.urlparse(url).path
+                    parsed_path = os.path.split(parsed_url)
+                    filter_defintion_filename = parsed_path[1]
+                    new_filter = Filter(filter_defintion_filename)
+                    response = urllib2.urlopen(url)
+                    text = response.read()
+                    new_filter.define_list_with_newline_delimited_text(text)
+                    remote_definitions_list.append(new_filter)
+
+        return remote_definitions_list
 
     def __file__(self):
         """Please leave this method unchanged"""
