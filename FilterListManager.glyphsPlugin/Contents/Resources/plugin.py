@@ -11,6 +11,7 @@
 #
 # ##########################################################################################################
 
+import logging
 import objc
 import os
 import plistlib
@@ -22,7 +23,12 @@ import urlparse
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 
-# TODO: add logging of errors
+# Logging setup
+log_dir = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "logs")
+log_path = os.path.join(log_dir, "flm.log")
+if not os.path.isdir(log_dir):
+    os.makedirs(log_dir)
+logging.basicConfig(filename=log_path, filemode='w', format='%(asctime)s %(levelname)s  %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
 
 
 class FilterListManager(GeneralPlugin):
