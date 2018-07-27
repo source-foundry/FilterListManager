@@ -187,6 +187,7 @@ class FilterListManager(GeneralPlugin):
         )
 
     def open_glyphsfilters_directory(self, sender):
+        """Called from a plugin Edit menu item and opens the ~/GlyphsFilters directory in the macOS Finder"""
         glyphs_filters_dirpath = os.path.join(os.path.expanduser("~"), "GlyphsFilters")
         if not os.path.isdir(glyphs_filters_dirpath):
             Glyphs.showNotification(
@@ -197,12 +198,15 @@ class FilterListManager(GeneralPlugin):
             subprocess.call(["open", glyphs_filters_dirpath])
 
     def filter_directory_is_present(self):
+        """Tests for presence of the ~/GlyphsFilters directory"""
         if not os.path.isdir(os.path.join(os.path.expanduser("~"), "GlyphsFilters")):
             return False
         else:
             return True
 
     def get_local_filter_definitions_list(self):
+        """Reads and launches parsing of local definition files, returns a Python list of
+           Filter objects that are created from the parse"""
         local_definitions_list = []
         filter_definition_dir_path = os.path.join(
             os.path.expanduser("~"), "GlyphsFilters"
@@ -237,9 +241,11 @@ class FilterListManager(GeneralPlugin):
         return local_definitions_list
 
     def get_remote_filter_definitions_list(self):
+        """Pulls, reads, and launches parsing of remote definition files, returns a Python list of
+           Filter objects that are created from the parse"""
         remote_definitions_list = []
         remote_filter_definitions_path = os.path.join(
-            os.path.expanduser("~"), "GlyphsFilters", "remote", "remotedefs.txt"
+            os.path.expanduser("~"), "GlyphsFilters", "remote", "defs.txt"
         )
         if not os.path.isfile(remote_filter_definitions_path):
             return []
@@ -264,7 +270,7 @@ class FilterListManager(GeneralPlugin):
         return remote_definitions_list
 
     def __file__(self):
-        """Please leave this method unchanged"""
+        """Glyphs plugin API specific method. Please leave this method unchanged"""
         return __file__
 
 
