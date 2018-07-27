@@ -91,10 +91,15 @@ class FilterListManager(GeneralPlugin):
         # Expected filter definitions directory test
         if not self.filter_directory_is_present():
             Glyphs.showNotification(
-                "Filter List Manager", "ERROR: Unable to locate GlyphsFilter directory!"
+                "Filter List Manager",
+                "ERROR: Unable to locate GlyphsFilters directory!",
+            )
+            logging.error(
+                "Unable to locate the ~/GlyphsFilters directory.  This directory is mandatory for execution.  Please create it!"
             )
             return 0
 
+        # define the Glyphs CustomFilters.plist file path for reads/writes
         plist_path = os.path.join(
             os.path.expanduser("~"),
             "Library",
@@ -102,10 +107,31 @@ class FilterListManager(GeneralPlugin):
             "Glyphs",
             "CustomFilter.plist",
         )
-        previous_plist_data = plistlib.readPlist(plist_path)
+
+        # --------------------------------------------
+        #
+        #  Backup original CustomFilters.plist file
+        #
+        # --------------------------------------------
+
+        # read original CustomFilters.plist definition file
+        #  - used to prepare backup
+        #  - used to define new definition file
+        try:
+            previous_plist_data = plistlib.readPlist(plist_path)
+        except Exception as e:
+            Glyphs.showNotification(
+                "Filter List Manager",
+                "ERROR: Unable to read CustomFilters.plist file. See log.",
+            )
+            logging.error(
+                "Unable to read the original CustomFilters.plist file in order to create a backup.  Error: "
+                + str(e)
+            )
+            return 1
+
         new_plist_list = []  # storage data structure for new plist file definitions
 
-        # backup existing plist file
         previous_plist_backup_dir = os.path.join(
             os.path.expanduser("~"), "GlyphsFilters", "backup"
         )
@@ -113,13 +139,28 @@ class FilterListManager(GeneralPlugin):
             previous_plist_backup_dir, "CustomFilter.plist"
         )
 
-        if os.path.exists(previous_plist_backup_dir):
-            shutil.move(plist_path, previous_plist_backup_path)
-        else:
-            os.makedirs(previous_plist_backup_dir)
-            shutil.move(plist_path, previous_plist_backup_path)
+        try:
+            if os.path.exists(previous_plist_backup_dir):
+                shutil.move(plist_path, previous_plist_backup_path)
+            else:
+                os.makedirs(previous_plist_backup_dir)
+                shutil.move(plist_path, previous_plist_backup_path)
+        except Exception as e:
+            Glyphs.showNotification(
+                "Filter List Manager",
+                "ERROR: Unable to backup original CustomFilters.plist file. See log.",
+            )
+            logging.error(
+                "Unable to backup original CustomFilters.plist file. Error: " + str(e)
+            )
+            return 1
 
-        # Begin update process
+        # -----------------------------------------------------
+        #
+        #  Update CustomFilters.plist file with new definitions
+        #
+        # -----------------------------------------------------
+
         local_filter_definitions_list = self.get_local_filter_definitions_list()
         remote_filter_definitions_list = self.get_remote_filter_definitions_list()
         plist_filter_definitions_list = []
@@ -131,12 +172,20 @@ class FilterListManager(GeneralPlugin):
             filter_dict["name"] = local_filter.name
             filter_dict["list"] = local_filter.list
             plist_filter_definitions_list.append(filter_dict)
+            logging.info(
+                "Found local definition file for the filter '" + local_filter.name + "'"
+            )
 
         for remote_filter in remote_filter_definitions_list:
             filter_dict = {}
             filter_dict["name"] = remote_filter.name
             filter_dict["list"] = remote_filter.list
             plist_filter_definitions_list.append(filter_dict)
+            logging.info(
+                "Found remote definition file for the filter '"
+                + remote_filter.name
+                + "'"
+            )
 
         # confirm that at least one definition was parsed from the definition files
         # if not, abort
@@ -148,13 +197,21 @@ class FilterListManager(GeneralPlugin):
                 "Filter List Manager",
                 "Unable to identify new filter list definition files. No changes were made.",
             )
+            logging.info(
+                "Unable to identify new filter list definition files. There were no changes made to the filter list definitions."
+            )
             return 0
 
         # filter out previous filter list contents in the CustomFilter.plist
         # file and keep previous non-filter list contents
         for previous_definition in previous_plist_data:
             if "list" in previous_definition:
-                pass
+                if "name" in previous_definition:
+                    logging.info(
+                        "Removing previously defined filter list '"
+                        + previous_definition["name"]
+                        + "'"
+                    )
             else:
                 new_plist_list.append(previous_definition)
 
@@ -164,15 +221,30 @@ class FilterListManager(GeneralPlugin):
         for new_definition in plist_filter_definitions_list:
             new_plist_list.append(new_definition)
 
-        plistlib.writePlist(new_plist_list, plist_path)
+        # write new CustomFilters.plist definition file to disk
+        try:
+            plistlib.writePlist(new_plist_list, plist_path)
+        except Exception as e:
+            Glyphs.showNotification(
+                "Filter List Manager",
+                "ERROR: Unable to write CustomFilters.plist file. See log.",
+            )
+            logging.error(
+                "Unable to write new CustomFilters.plist file to disk. Error: " + str(e)
+            )
+            return 1
 
         Glyphs.showNotification(
             "Filter List Manager",
             "The filter list updates were successful.  Please quit and restart Glyphs.",
         )
+        logging.info(
+            "The filter list updates were successful.  Please quit and restart the Glyphs application to view the new filter lists."
+        )
 
     def restore_filters(self, sender):
         """Perform restore of default list filters"""
+        # define the path to write out the default definitions file
         write_path = os.path.join(
             os.path.expanduser("~"),
             "Library",
@@ -180,6 +252,8 @@ class FilterListManager(GeneralPlugin):
             "Glyphs",
             "CustomFilter.plist",
         )
+        # define the CustomFilters.plist file path that is embedded in the plugin
+        # for restoration of the default filter lists in the Glyphs application
         read_path = os.path.join(
             os.path.expanduser("~"),
             "Library",
@@ -191,11 +265,26 @@ class FilterListManager(GeneralPlugin):
             "Resources",
             "CustomFilter.plist",
         )
-        default_filters = plistlib.readPlist(read_path)
-        plistlib.writePlist(default_filters, write_path)
+        # copy the default definitions to the Glyphs application
+        try:
+            default_filters = plistlib.readPlist(read_path)
+            plistlib.writePlist(default_filters, write_path)
+        except Exception as e:
+            Glyphs.showNotification(
+                "Filter List Manager",
+                "ERROR: Unable to restore the default filter list definitions. See log.",
+            )
+            logging.error(
+                "Unable to restore default filter list definitions.  Error: " + str(e)
+            )
+            return 1
+
         Glyphs.showNotification(
             "Filter List Manager",
             "The default filter list restoration was successful.  Please quit and restart Glyphs.",
+        )
+        logging.info(
+            "The default filter list restoration was successful.  Please quit and restart the Glyphs application to view the filter lists."
         )
 
     def open_glyphsfilters_directory(self, sender):
@@ -206,8 +295,14 @@ class FilterListManager(GeneralPlugin):
                 "Filter List Manager",
                 "Unable to find ~/GlyphsFilters directory. Please create this path.",
             )
+            logging.error(
+                "Unable to find the ~/GlyphsFilters directory.  Please create this directory path."
+            )
         else:
             subprocess.call(["open", glyphs_filters_dirpath])
+            logging.info(
+                "The ~/GlyphsFilters directory was opened with the Edit menu item."
+            )
 
     def filter_directory_is_present(self):
         """Tests for presence of the ~/GlyphsFilters directory"""
