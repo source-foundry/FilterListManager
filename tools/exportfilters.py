@@ -20,7 +20,8 @@
 # https://www.python.org/downloads/ for instructions on how to install it.
 #
 #
-# Execute the script with the following command in your terminal window:
+# Execute the script from any directory on your system with the following command
+# in your terminal window:
 #
 #    python3 exportfilters.py
 #
@@ -49,8 +50,7 @@ def main():
         )
 
         flm_definitions_directory_path = os.path.join(
-            os.path.expanduser("~"),
-            "GlyphsFilters"
+            os.path.expanduser("~"), "GlyphsFilters"
         )
 
         if not os.path.isdir(flm_definitions_directory_path):
@@ -65,10 +65,14 @@ def main():
                     filter_list = filter_dict["list"]
 
                     base_filepath = filter_name + ".txt"
-                    outfile_path = os.path.join(flm_definitions_directory_path, base_filepath)
+                    outfile_path = os.path.join(
+                        flm_definitions_directory_path, base_filepath
+                    )
 
                     # create newline-delimited file format
-                    outfile_text = "// " + filter_name + " filter" + os.linesep + os.linesep
+                    outfile_text = (
+                        "// " + filter_name + " filter" + os.linesep + os.linesep
+                    )
                     for glyph_name in filter_list:
                         outfile_text += glyph_name + os.linesep
 
@@ -80,7 +84,11 @@ def main():
         print("Export complete!")
         print("You can find the definition files in the directory ~/GlyphsFilters")
     except Exception as e:
-        sys.stderr.write("[ERROR] There was an error during the export attempt. " + str(e) + os.linesep)
+        sys.stderr.write(
+            "[ERROR] There was an error during the export attempt. "
+            + str(e)
+            + os.linesep
+        )
         sys.exit(1)
 
 
