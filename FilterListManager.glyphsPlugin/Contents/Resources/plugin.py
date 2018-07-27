@@ -161,8 +161,28 @@ class FilterListManager(GeneralPlugin):
         #
         # -----------------------------------------------------
 
-        local_filter_definitions_list = self.get_local_filter_definitions_list()
-        remote_filter_definitions_list = self.get_remote_filter_definitions_list()
+        # parse local filter list definition files
+        try:
+            local_filter_definitions_list = self.get_local_filter_definitions_list()
+        except Exception as e:
+            Glyphs.showNotification(
+                "Filter List Manager",
+                "Failed to parse local definition files. See log.",
+            )
+            logging.error("Failed to parse local definitions files.  Error: " + str(e))
+            return 1
+
+        # parse remote filter list definition files
+        try:
+            remote_filter_definitions_list = self.get_remote_filter_definitions_list()
+        except Exception as e:
+            Glyphs.showNotification(
+                "Filter List Manager",
+                "Failed to parse remote definition files. See log.",
+            )
+            logging.error("Failed to parse remote definitions files.  Error: " + str(e))
+            return 1
+
         plist_filter_definitions_list = []
 
         # create list with data structure that is formatted
