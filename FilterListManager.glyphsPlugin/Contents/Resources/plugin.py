@@ -28,7 +28,13 @@ log_dir = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "logs")
 log_path = os.path.join(log_dir, "flm.log")
 if not os.path.isdir(log_dir):
     os.makedirs(log_dir)
-logging.basicConfig(filename=log_path, filemode='w', format='%(asctime)s %(levelname)s  %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
+logging.basicConfig(
+    filename=log_path,
+    filemode="w",
+    format="%(asctime)s %(levelname)s  %(message)s",
+    datefmt="%m/%d/%Y %I:%M:%S %p",
+    level=logging.DEBUG,
+)
 
 
 class FilterListManager(GeneralPlugin):
