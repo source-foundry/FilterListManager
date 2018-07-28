@@ -12,6 +12,12 @@ Filter List Manager (FLM) is a plugin for the [Glyphs font editor](https://glyph
 4. Double-click the plugin `FilterListManager.glyphsPlugin` to open it with the Glyphs application
 5. Acknowledge that you want to install FLM in the Glyphs Install Plugin dialog that appears
 
+### Upgrades
+
+The `Preferences > Addons > Plugins` window in Glyphs will indicate when an update is available for the FLM plugin.  To upgrade your installed plugin, locate the [latest release of the plugin](https://github.com/source-foundry/FilterListManager/releases/latest) in the Github repository Releases and follow the same instruction that you followed for initial installation above.  
+
+Changes that were included in the release are indicated in the repository [CHANGELOG.md](CHANGELOG.md).
+
 ## Filter List Definition File Specification
 
 The filter list definition file is a text file that is formatted with a newline-delimited list of glyph names to include in the new Glyphs filter list.  Each definition file defines a single filter list. You can use one or more filter list definition files simultaneously during updates with the FLM plugin.
