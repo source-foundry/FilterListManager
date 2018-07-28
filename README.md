@@ -92,7 +92,7 @@ ubreve
 
 The same definition file could be specified in a much more concise format like this:
 
-##### Filename = `Esperanto.txt`
+##### Filename: `Esperanto.txt`
 
 ```
 Ccircumflex
