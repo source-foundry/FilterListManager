@@ -14,7 +14,7 @@ Filter List Manager (FLM) is a plugin for the [Glyphs font editor](https://glyph
 
 ### Upgrades
 
-The `Preferences > Addons > Plugins` window in Glyphs will indicate when an update is available for the FLM plugin.  To upgrade your installed plugin, locate the [latest release of the plugin](https://github.com/source-foundry/FilterListManager/releases/latest) in the Github repository Releases and follow the same instruction that you followed for initial installation above.  
+The `Preferences > Addons > Plugins` window in Glyphs will indicate when an update is available for the FLM plugin.  To upgrade your installed plugin, locate the [latest release of the plugin](https://github.com/source-foundry/FilterListManager/releases/latest) in the Github Releases and follow the same instructions that you followed for initial installation above.  
 
 Changes that were included in the release are indicated in the repository [CHANGELOG.md](CHANGELOG.md).
 
