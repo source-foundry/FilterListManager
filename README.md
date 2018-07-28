@@ -131,7 +131,7 @@ You can upload filter list definition files to any publicly accessible web serve
 
 To use remote filter list definition files, a text file must be saved on the path `~/GlyphsFilters/remote/defs.txt` with a newline-delimited list of URL that point to one or more filter list definition files.  Each URL represents a new filter list definition for the Glyphs application.  You may use the comment line indicators `#` and `//` in the `~/GlyphsFilters/remote/defs.txt` file.  Empty lines are also permitted.
 
-An example remote filter list definition file that points to three new filters located on a remote Github server follows:
+An example remote filter list definition file that points to two new filters located on a remote Github server follows:
 
 ```
 // Remote filter list definitions
