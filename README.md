@@ -18,7 +18,7 @@ The `Preferences > Addons > Plugins` window in Glyphs will indicate when an upda
 
 Changes that were included in the release are indicated in the repository [CHANGELOG.md](CHANGELOG.md).
 
-## Filter List Definition File Specification
+## How to Make a Glyphs Filter List Definition File
 
 The filter list definition file is a text file that is formatted with a newline-delimited list of glyph names to include in the new Glyphs filter list.  Each definition file defines a single filter list. You can use one or more filter list definition files simultaneously during updates with the FLM plugin.
 
