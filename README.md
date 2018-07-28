@@ -38,3 +38,76 @@ Format your filter list definition file with one glyph name per line.  This is c
 Comment lines (i.e., lines in the definition file that are not intended to be used as part of the definition list) are indicated with either `#` or `//` at the beginning of the line.  Include one of these two comment indicators at the beginning of each line that is intended to be a comment line in your definition file document.
 
 Note: Comment indicators can be added to the start of a line that includes a glyph name in order to filter these lines out of the final filter list.  This is called "commenting out" a glyph.
+
+### Example
+
+The following is an example of a valid filter list definition file that includes comment and empty line formatting:
+
+##### Filename: `Esperanto.txt`
+
+```
+// -------------------------------------------------
+// Esperanto Glyphs filter list definition file
+// Copyright 2018, Some Person
+// MIT License
+// -------------------------------------------------
+
+# U+0108
+Ccircumflex
+
+# U+0109
+ccircumflex
+
+# U+011C
+Gcircumflex
+
+# U+011D
+gcircumflex
+
+# U+0124
+Hcircumflex
+
+# U+0125
+hcircumflex
+
+# U+0134
+Jcircumflex
+
+# U+0135
+jcircumflex
+
+# U+015C
+Scircumflex
+
+# U+015D
+scircumflex
+
+# U+016C
+Ubreve
+
+# U+016D
+ubreve
+
+```
+
+The same definition file could be specified in a much more concise format like this:
+
+##### Filename = `Esperanto.txt`
+
+```
+Ccircumflex
+ccircumflex
+Gcircumflex
+gcircumflex
+Hcircumflex
+hcircumflex
+Jcircumflex
+jcircumflex
+Scircumflex
+scircumflex
+Ubreve
+ubreve
+```
+
+The filter list that is created in the Glyphs application does not differ between the two definition files.  Use the approach that works best for you.
+
