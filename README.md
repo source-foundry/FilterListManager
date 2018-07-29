@@ -2,16 +2,16 @@
 
 ## About
 
-Filter List Manager (FLM) is a plugin for the [Glyphs font editor](https://glyphsapp.com) that automates the creation of glyph filter lists with simple newline-delimited glyph definition text files.  Definition files can be stored locally on your computer or remotely (e.g., in a Github repository) and used with the plugin.
+Filter List Manager (FLM) is a free, open source plugin for the [Glyphs font editor](https://glyphsapp.com) that automates the creation of glyph filter lists with simple newline-delimited glyph definition text files.  Definition files can be stored locally on your computer or remotely (e.g., in a Github repository) and used with the plugin.
 
 ## Table of Contents
 
-- [Please Read Before Use]() (Really, please read it!)
-- [Plugin Installation, Upgrades, Removal]()
-- [How to Make Filter List Definition Files]()
-- [Filter List Definition File Storage Locations]()
-- [Plugin Usage]()
-- [Contributing]()
+- [Please Read Before Use](#please-read-before-use) (Really, please read it!)
+- [Plugin Installation, Upgrades, Removal](#plugin-installation)
+- [How to Make Filter List Definition Files](DEFINITIONS.md)
+- [Filter List Definition File Storage Locations](#filter-list-definition-file-storage-location)
+- [Plugin Usage](#plugin-usage)
+- [Contributing](#contributing)
 - [License](LICENSE)
 
 ## Please Read Before Use!
