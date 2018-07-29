@@ -301,27 +301,6 @@ class FilterListManager(GeneralPlugin):
 
     def restore_filters(self, sender):
         """Perform restore of default list filters"""
-        # define the path to write out the default definitions file
-        write_path = os.path.join(
-            os.path.expanduser("~"),
-            "Library",
-            "Application Support",
-            "Glyphs",
-            "CustomFilter.plist",
-        )
-        # define the CustomFilters.plist file path that is embedded in the plugin
-        # for restoration of the default filter lists in the Glyphs application
-        read_path = os.path.join(
-            os.path.expanduser("~"),
-            "Library",
-            "Application Support",
-            "Glyphs",
-            "Plugins",
-            "FilterListManager.glyphsPlugin",
-            "Contents",
-            "Resources",
-            "CustomFilter.plist",
-        )
         # copy the default definitions to the Glyphs application
         try:
             default_filters = plistlib.readPlist(FLM_DEFAULT_PLIST)
