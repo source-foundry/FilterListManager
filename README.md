@@ -20,11 +20,11 @@ Changes that were included in the release are indicated in the repository [CHANG
 
 ## How to Make a Filter List Definition File
 
-The filter list definition file is a newline-delimited text file that lists your desired glyph names.  See [DEFINITIONS.md](DEFINITIONS.md) for detailed documentation.
+The filter list definition file is a newline-delimited text file that lists your desired glyph names.  See [DEFINITIONS.md](DEFINITIONS.md) for detailed documentation of how you format the file and define both glyph list names and the glyph names that are included in the filter lists.
 
-## Filter List Definition File Location
+## Filter List Definition File Storage Location
 
-The filter list definition files that you use to define new filter lists can be stored on your local computer system or on a remote server that is accessible through HTTP GET requests.  Local and remote filter list definition files can be used simultaneously to define all desired Glyphs filter lists with the FLM plugin.
+The filter list definition files that you use to define new filter lists can be stored on your local macOS system or on a remote server that is accessible through HTTP GET requests.  One or more local and remote filter list definition files can be used simultaneously to define all desired Glyphs font editor filter lists with the FLM plugin.
 
 ### Local definition files
 

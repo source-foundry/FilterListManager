@@ -1,6 +1,6 @@
 ## Filter List Definition File Spec
 
-The filter list definition file is a text file that is formatted with a newline-delimited list of glyph names to include in the new Glyphs filter list.  Each definition file defines a single filter list. You can use one or more filter list definition files simultaneously during updates with the FLM plugin.
+The filter list definition file is a text file that is formatted with a newline-delimited list of glyph names to include in the new Glyphs filter list.  Each definition file defines a single filter list. You can use one or more filter list definition files simultaneously during updates with the FLM plugin and these settings files can be stored on your local macOS system or on a remote web server that is accessible through HTTP GET requests.
 
 ### Filter list name
 
@@ -23,7 +23,7 @@ Format your filter list definition file with one glyph name per line.  This is c
 
 Comment lines (i.e., lines in the definition file that are not intended to be used as part of the definition list) are indicated with either `#` or `//` at the beginning of the line.  Include one of these two comment indicators at the beginning of each line that is intended to be a comment line in your definition file document.
 
-Note: Comment indicators can be added to the start of a line that includes a glyph name in order to filter these lines out of the final filter list.  This is called "commenting out" a glyph.
+Note: Comment indicators can be added to the start of a line that includes a glyph name in order to exclude these lines from the list of glyphs used in a filter.  This can be helpful if you need to make periodic modifications to sets of glyph names in a given list.  Simply place a `#` or `//` at the start of the glyph name line to exclude it from the filter list definition.
 
 ### Example
 
