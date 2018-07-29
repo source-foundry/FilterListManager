@@ -28,12 +28,12 @@ from GlyphsApp.plugins import *
 # -----------------
 # Glyphs application paths
 GLYPHS_PLIST_FILE = os.path.join(
-            os.path.expanduser("~"),
-            "Library",
-            "Application Support",
-            "Glyphs",
-            "CustomFilter.plist",
-        )
+    os.path.expanduser("~"),
+    "Library",
+    "Application Support",
+    "Glyphs",
+    "CustomFilter.plist",
+)
 
 
 # FLM plugin paths
@@ -42,21 +42,21 @@ FLM_BACKUP_DIR = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "backup"
 FLM_BACKUP_ORIGINAL_FILE = os.path.join(FLM_BACKUP_DIR, "CustomFilters.plist.original")
 FLM_BACKUP_PREVIOUS_FILE = os.path.join(FLM_BACKUP_DIR, "CustomFilters.plist")
 FLM_DEFAULT_PLIST = os.path.join(
-            os.path.expanduser("~"),
-            "Library",
-            "Application Support",
-            "Glyphs",
-            "Plugins",
-            "FilterListManager.glyphsPlugin",
-            "Contents",
-            "Resources",
-            "CustomFilter.plist",
-        )
+    os.path.expanduser("~"),
+    "Library",
+    "Application Support",
+    "Glyphs",
+    "Plugins",
+    "FilterListManager.glyphsPlugin",
+    "Contents",
+    "Resources",
+    "CustomFilter.plist",
+)
 FLM_LOG_DIR = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "logs")
 FLM_LOG_FILE = os.path.join(FLM_LOG_DIR, "flm.log")
 FLM_REMOTE_DEF_FILE = os.path.join(
-            os.path.expanduser("~"), "GlyphsFilters", "remote", "defs.txt"
-        )
+    os.path.expanduser("~"), "GlyphsFilters", "remote", "defs.txt"
+)
 
 # ---------------
 # Logging setup
@@ -267,7 +267,11 @@ class FilterListManager(GeneralPlugin):
             else:
                 new_plist_list.append(previous_definition)
                 if "name" in previous_definition:
-                    logging.info("Saving previously defined CustomFilters.plist data with name '" + previous_definition["name"] + "'")
+                    logging.info(
+                        "Saving previously defined CustomFilters.plist data with name '"
+                        + previous_definition["name"]
+                        + "'"
+                    )
 
         # add new data that was read from local and remote
         # definition files to a data format that translates
