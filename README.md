@@ -4,6 +4,30 @@
 
 Filter List Manager (FLM) is a plugin for the [Glyphs font editor](https://glyphsapp.com) that automates the creation of glyph filter lists with simple newline-delimited glyph definition text files.  Definition files can be stored locally on your computer or remotely (e.g., in a Github repository) and used with the plugin.
 
+## Table of Contents
+
+- [Please Read Before Use]() (Really, please read it!)
+- [Plugin Installation and Upgrades]()
+- [How to Make Filter List Definition Files]()
+- [Filter List Definition File Storage Locations]()
+- [Plugin Usage]()
+- [Contributing]()
+- [License](LICENSE)
+
+## Please Read Before Use!
+
+The first run of the plugin replaces all existing Glyphs font editor filter lists that you have previously defined with the default, builtin approach with the filter lists that are defined with the definition files specified for the FLM plugin.  If you do not want to lose any existing custom filter lists, export them to FLM plugin specified definition files BEFORE YOU USE THE PLUGIN!  We provide a handy Python 3 script to do just that.  Download the `exportfilters.py` script located in the `tools` directory of this repository and run the script with a Python 3 interpreter using the following from any directory on your system:
+
+```
+python3 exporfilters.py
+```
+
+Confirm that all of your existing filters are defined in new filter list definition files on the path `~/GlyphsFilters`, then proceed with use of the plugin to define additonal filter lists.
+
+Alternatively, you can backup the file `~/Library/Application Support/Glyphs/CustomFilter.plist` before you use the plugin and replace the FLM plugin generated file with this backup whenever you want to restore your existing filter lists.
+
+For those who ignored these instructions, there is a backup of your original CustomFilter.plist file after the first run of the plugin on the path `~/GlyphsFilters/backup/CustomFilter.plist`.  Your original definition file backup is only present after the first run of the plugin.  After that it is overwritten by subsequent backup files and your original filter lists are gone for good!
+
 ## Plugin Installation
 
 1. Download the [latest release archive](https://github.com/source-foundry/FilterListManager/releases) from the FLM repository Releases
@@ -56,3 +80,24 @@ https://raw.githubusercontent.com/source-foundry/charset-filters/master/MES-1.tx
 
 Please note in the above example that you must use the URL for the "Raw" text file if you push your definition files to Github.  This is formatted as `https://raw.githubusercontent.com/[account]/[project name]/[branch]/[filename]`. When you enter this URL in your browser you should see only the text file with no Github website UI around it.  If you see the Github UI in the browser window, the URL that you are viewing points to HTML text and this will lead to errors during the FLM plugin update attempt.
 
+## Plugin Usage
+
+Following installation, you will find three new menu items under the Glyphs application Edit menu:
+
+- Update Filter Lists
+- Restore Default Filter Lists
+- Open GlyphsFilters Directory
+
+### Update Filter Lists Menu Item
+
+The Update Filter Lists menu item performs an update of your Glyphs filter list definitions using all local and remote filter list definition files that you define in your `~/GlyphsFilters` directory.  
+
+
+
+## Contributing
+
+Contributions to the FLM plugin project are warmly welcomed.  Fork the repository and submit a Github pull request to suggest modifications to the source.  File new issue reports for problems that you identify during use or for plugin enhancement suggestions.
+
+## License
+
+[Apache License 2.0](LICENSE)
