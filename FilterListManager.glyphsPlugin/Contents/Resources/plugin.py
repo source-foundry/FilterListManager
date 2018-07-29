@@ -409,8 +409,7 @@ class FilterListManager(GeneralPlugin):
                     new_filter = Filter(filter_defintion_filename)
 
                     # quote URL defined in list to make HTTP GET request
-                    encoded_url = urllib2.quote(url)
-                    response = urllib2.urlopen(encoded_url)
+                    response = urllib2.urlopen(url)
                     text = response.read()
                     new_filter.define_list_with_newline_delimited_text(text)
                     remote_definitions_list.append(new_filter)
