@@ -24,7 +24,7 @@ python3 exportfilters.py
 
 Confirm that all of your existing filters are defined in new filter list definition files that are exported to the directory `~/GlyphsFilters`, then proceed with use of the plugin to define additional filter lists and manage your previous filter lists.
 
-For those who don't read documentation, there is a backup of the original `CustomFilter.plist` file that was present on FLM install.  This file contains all of the filter list definitions that were present before you ran the FLM plugin.  You can find this backup on the path `~/GlyphsFilters/backup/CustomFilter.plist.original`. Rename the file to `CustomFilter.plist` and move it to the path `~/Library/Application Support/Glyphs/CustomFilter.plist`.
+For those who don't read documentation, there is a backup of the original `CustomFilter.plist` file that was present on FLM install.  This file contains all of the filter list definitions that were present before you ran the FLM plugin.  You can find this backup on the path `~/GlyphsFilters/backup/CustomFilter.plist.original`. Rename the file to `CustomFilter.plist` and move it to the path `~/Library/Application Support/Glyphs/CustomFilter.plist` to restore your original filter list state, then use the documentation above to export the filters for use with this plugin.
 
 ## Plugin Installation
 
