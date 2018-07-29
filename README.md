@@ -114,7 +114,7 @@ Select the Update Filter Lists menu item to perform an update of your Glyphs fil
 
 ### Restore Default Filter Lists Menu Item
 
-Select the Restore Default Filter Lists menu item to restore a default set of filter lists that include ASCII, Mac Roman, and Windows 1252.
+Select the Restore Default Filter Lists menu item to restore a default set of filter lists that include the ASCII, Mac Roman, and Windows 1252 filters.
 
 ### Open GlyphsFilters Directory Menu Item
 
@@ -123,7 +123,7 @@ Select the Open GlyphsFilters Directory menu item to open the `~/GlyphsFilters` 
 
 ## Contributing
 
-Contributions to the FLM plugin project are warmly welcomed.  Fork the repository and submit a Github pull request to suggest modifications to the source.  File new issue reports for problems that you identify during use or for plugin enhancement suggestions.
+Contributions to the FLM plugin project are warmly welcomed.  Fork the repository and submit a Github pull request to suggest modifications to the source.  Source must be contributed under the Apache License 2.0. File new issue reports for problems that you identify during use or for plugin enhancement suggestions.
 
 ## License
 
