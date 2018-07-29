@@ -4,6 +4,15 @@
 
 Filter List Manager (FLM) is a free, open source plugin for the [Glyphs font editor](https://glyphsapp.com) that automates the creation of glyph filter lists with simple newline-delimited glyph definition text files.  Definition files can be stored locally on your computer or remotely (e.g., in a Github repository) and used with the plugin.
 
+## Quickstart Guide
+
+- Download the FLM plugin from the repository releases and install in the Glyphs application
+- Export your previously defined filter list definitions to FLM formatted definition files with [the instructions below](#please-read-before-use)
+- Create newline-delimited local filter list definition files in `~/GlyphsFilters` using the base filename of the definition file to name your filter list
+- (*Optional*) Push one or more new filter list definition files to a remote server (or locate definition files that someone else has pushed to a remote server) and create a `~/GlyphsFilters/remote/defs.txt` settings file to [define the URL to the remote filter list definition files](https://github.com/source-foundry/FilterListManager/tree/dev#remote-definition-files)
+- Select the Edit > Update Filter Lists menu item in the Glyphs editor
+- Close and restart Glyphs to view your new filter lists!
+
 ## Table of Contents
 
 - [Please Read Before Use](#please-read-before-use) (Really, please read it!)
@@ -28,7 +37,7 @@ For those who don't read documentation, there is a backup of the original `Custo
 
 ## Plugin Installation
 
-1. Download the [latest release archive](https://github.com/source-foundry/FilterListManager/releases) from the FLM repository Releases
+1. Download the [latest release archive](https://github.com/source-foundry/FilterListManager/releases) from the FLM repository Releases in either a *.zip or *.tar.gz compressed format
 2. Unpack the downloaded archive file
 3. Open the unpacked directory
 4. Double-click the plugin `FilterListManager.glyphsPlugin` in the top level of the directory to open it with the Glyphs application
@@ -36,9 +45,9 @@ For those who don't read documentation, there is a backup of the original `Custo
 
 ### Upgrade Plugin
 
-The `Preferences > Addons > Plugins` window in Glyphs will indicate when an update is available for the FLM plugin.  To upgrade your installed plugin, locate the [latest release of the plugin](https://github.com/source-foundry/FilterListManager/releases/latest) in the Github Releases and follow the same instructions that you followed for initial installation above.  
+The `Preferences > Addons > Plugins` window in Glyphs will indicate when an update is available for the FLM plugin.  To upgrade your installed plugin, locate the [latest release of the plugin](https://github.com/source-foundry/FilterListManager/releases/latest) and follow the same instructions that you followed for the initial installation above.  
 
-Changes that were included in the release are indicated in the repository [CHANGELOG.md](CHANGELOG.md).
+Changes that were included in releases since your last upgrade are indicated in the repository [CHANGELOG.md](CHANGELOG.md).
 
 ### Uninstall Plugin
 
@@ -48,7 +57,7 @@ Uninstall the FLM plugin by deleting the directory on the path `~/Library/Applic
 $ rm -rf ~/GlyphsFilters
 ```
 
-All filter lists that were previously defined with FLM will remain in your editor.  If you wish to remove these, use the Glyphs GUI to remove each filter list.  Removal of the FLM plugin does not hinder use of previously defined lists.  You can remove all components of the plugin and continue to use filter lists normally in the absence of the plugin and all settings files.
+All filter lists that were previously defined with FLM will remain in your editor.  If you wish to remove any previously defined filter lists, use the builtin functionality for filter list management in the Glyphs GUI.  Removal of the FLM plugin does not limit use of previously defined filter lists.  You can remove all components of the plugin and continue to use filter lists normally in the absence of the plugin and all settings files.  There is no need to modify the builtin functionality for filter list management in Glyphs following an uninstall of the FLM plugin.
 
 ## How to Make a Filter List Definition File
 
