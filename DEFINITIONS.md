@@ -13,7 +13,7 @@ The following are examples of how filenames are mapped to filter list names in t
 - `MES-1.txt` = `MES-1`
 - `Serbian (Latin).txt` = `Serbian (Latin)`
 
-The plugin provides support for empty lines to improve readability and organization of the document.  Use as many empty lines as you need in the definition file to format it however it is most helpful for sharing and maintenance of the definitions.
+The plugin provides support for empty lines in the body of the text file to improve readability and organization of the document.  Use as many empty lines as you need in the definition file to format it however it is most helpful for sharing and maintenance of the definitions.
 
 ### Glyph names
 
@@ -21,9 +21,9 @@ Format your filter list definition file with one glyph name per line.  This is c
 
 ### Comment line support
 
-Comment lines (i.e., lines in the definition file that are not intended to be used as part of the definition list) are indicated with either `#` or `//` at the beginning of the line.  Include one of these two comment indicators at the beginning of each line that is intended to be a comment line in your definition file document.
+Comment lines (i.e., lines in the definition file that include text that is not intended for use as part of the glyph name list) are indicated with either `#` or `//` at the beginning of the line.  Include one of these two comment indicators at the beginning of each line that is intended to be a comment line in your definition file document.  It is not mandatory to use comment indicators on empty lines that are used to format your document (e.g., empty lines between glyph name definitions, see example below).
 
-Note: Comment indicators can be added to the start of a line that includes a glyph name in order to exclude these lines from the list of glyphs used in a filter.  This can be helpful if you need to make periodic modifications to sets of glyph names in a given list.  Simply place a `#` or `//` at the start of the glyph name line to exclude it from the filter list definition.
+Note: Comment indicators can be added to the start of one or more lines that includes glyph names in order to exclude these lines from the list of glyphs used in a filter.  This can be helpful if you need to make periodic modifications to sets of glyph names in a given list.  Simply place a `#` or `//` at the start of the glyph name line to exclude it from the filter list definition.
 
 ### Example
 
@@ -76,7 +76,7 @@ ubreve
 
 ```
 
-The same definition file could be specified in a much more concise format like this:
+The same definition file could be written in a much more concise format like this:
 
 ##### Filename: `Esperanto.txt`
 
@@ -95,4 +95,4 @@ Ubreve
 ubreve
 ```
 
-The filter list that is created in the Glyphs application does not differ between the two definition files.  Use the approach that works best for you.
+The filter list that is created in the Glyphs application does not differ between the two definition file examples above.  Use the approach that works best for you.
