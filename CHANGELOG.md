@@ -1,2 +1,13 @@
 ## Changelog
 
+# 0.4.0
+
+- initial release
+- added automated backup of user's CustomFilters.plist file at the time of plugin install to prevent loss of custom filters
+- added exception handling for local/remote definition file parsing
+- refactored directory and file paths to module level constants
+- eliminated unnecessary variable definitions
+- added url decoding for filter list name parsing from remote file names
+- added documentation
+
+See repository releases for pre-release changelog documentation prior to the v0.4.0 release
