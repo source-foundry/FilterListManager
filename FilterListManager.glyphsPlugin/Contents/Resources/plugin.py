@@ -396,11 +396,17 @@ class FilterListManager(GeneralPlugin):
                 elif url[0] in ("#", "/"):
                     pass
                 else:
-                    parsed_url = urlparse.urlparse(url).path
+                    # unquote URL defined in list to define file name
+                    # (in case the user pasted a urlencoded string)
+                    decoded_url = urllib2.unquote(url)
+                    parsed_url = urlparse.urlparse(decoded_url).path
                     parsed_path = os.path.split(parsed_url)
                     filter_defintion_filename = parsed_path[1]
                     new_filter = Filter(filter_defintion_filename)
-                    response = urllib2.urlopen(url)
+
+                    # quote URL defined in list to make HTTP GET request
+                    encoded_url = urllib2.quote(url)
+                    response = urllib2.urlopen(encoded_url)
                     text = response.read()
                     new_filter.define_list_with_newline_delimited_text(text)
                     remote_definitions_list.append(new_filter)
