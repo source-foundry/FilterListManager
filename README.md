@@ -7,7 +7,7 @@ Filter List Manager (FLM) is a plugin for the [Glyphs font editor](https://glyph
 ## Table of Contents
 
 - [Please Read Before Use]() (Really, please read it!)
-- [Plugin Installation and Upgrades]()
+- [Plugin Installation, Upgrades, Removal]()
 - [How to Make Filter List Definition Files]()
 - [Filter List Definition File Storage Locations]()
 - [Plugin Usage]()
@@ -34,11 +34,21 @@ For those who don't read documentation, there is a backup of the original `Custo
 4. Double-click the plugin `FilterListManager.glyphsPlugin` in the top level of the directory to open it with the Glyphs application
 5. Acknowledge that you want to install FLM in the Glyphs Install Plugin dialog that appears
 
-### Upgrades
+### Upgrade Plugin
 
 The `Preferences > Addons > Plugins` window in Glyphs will indicate when an update is available for the FLM plugin.  To upgrade your installed plugin, locate the [latest release of the plugin](https://github.com/source-foundry/FilterListManager/releases/latest) in the Github Releases and follow the same instructions that you followed for initial installation above.  
 
 Changes that were included in the release are indicated in the repository [CHANGELOG.md](CHANGELOG.md).
+
+### Uninstall Plugin
+
+Uninstall the FLM plugin by deleting the directory on the path `~/Library/Application Support/Glyphs/Plugins/FilterListManager.glyphsPlugin`.  Next, delete the `~/GlyphsFilters` directory with the command:
+
+```
+$ rm -rf ~/GlyphsFilters
+```
+
+All filter lists that were previously defined with FLM will remain in your editor.  If you wish to remove these, use the Glyphs GUI to remove each filter list.  Removal of the FLM plugin does not hinder use of previously defined lists.  You can remove all components of the plugin and continue to use filter lists normally in the absence of the plugin and all settings files.
 
 ## How to Make a Filter List Definition File
 
