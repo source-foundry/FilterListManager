@@ -16,17 +16,15 @@ Filter List Manager (FLM) is a plugin for the [Glyphs font editor](https://glyph
 
 ## Please Read Before Use!
 
-The first run of the plugin replaces all existing Glyphs font editor filter lists that you have previously defined with the default, builtin approach with the filter lists that are defined with the definition files specified for the FLM plugin.  If you do not want to lose any existing custom filter lists, export them to FLM plugin specified definition files BEFORE YOU USE THE PLUGIN!  We provide a handy Python 3 script to do just that.  Download the `exportfilters.py` script located in the `tools` directory of this repository and run the script with a Python 3 interpreter using the following from any directory on your system:
+The first run of the plugin replaces all existing Glyphs font editor filter lists that you have previously defined with the filter lists that are defined using the definition files specified for the FLM plugin. A handy Python 3 script is available to export your existing filter list definitions to the FLM definition file format and should be used before you run a FLM update.  Download the `exportfilters.py` script located in the `tools` directory of this repository and run the script with a Python 3 interpreter using the following command from any directory on your system:
 
 ```
-python3 exporfilters.py
+python3 exportfilters.py
 ```
 
-Confirm that all of your existing filters are defined in new filter list definition files on the path `~/GlyphsFilters`, then proceed with use of the plugin to define additonal filter lists.
+Confirm that all of your existing filters are defined in new filter list definition files that are exported to the directory `~/GlyphsFilters`, then proceed with use of the plugin to define additional filter lists and manage your previous filter lists.
 
-Alternatively, you can backup the file `~/Library/Application Support/Glyphs/CustomFilter.plist` before you use the plugin and replace the FLM plugin generated file with this backup whenever you want to restore your existing filter lists.
-
-For those who ignored these instructions, there is a backup of your original CustomFilter.plist file after the first run of the plugin on the path `~/GlyphsFilters/backup/CustomFilter.plist`.  Your original definition file backup is only present after the first run of the plugin.  After that it is overwritten by subsequent backup files and your original filter lists are gone for good!
+For those who don't read documentation, there is a backup of the original `CustomFilter.plist` file that was present on FLM install.  This file contains all of the filter list definitions that were present before you ran the FLM plugin.  You can find this backup on the path `~/GlyphsFilters/backup/CustomFilter.plist.original`. Rename the file to `CustomFilter.plist` and move it to the path `~/Library/Application Support/Glyphs/CustomFilter.plist`.
 
 ## Plugin Installation
 
