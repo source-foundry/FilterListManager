@@ -68,6 +68,8 @@ $ mkdir ~/GlyphsFilters
 
 The GlyphsFilters directory can be opened by selecting the Edit > Open GlyphsFilters Directory menu item in the Glyphs application after you install the FLM plugin.
 
+Note: FLM does not search sub-directories of `~/GlyphsFilters` for local definition files so you can create one or more sub-directories to store definition files that are not in active use.  Sub-directory names `logs`, `backup`, and `remote` are reserved for the plugin. Please do not overwrite these directory paths.
+
 ### Remote definition files
 
 You can upload filter list definition files to any publicly accessible web server or use files that have been shared by others with this approach.  You must create one additional settings file in the `~/GlyphsFilters` directory to define one or more URL where the FLM plugin can locate the remotely stored definition files.  
