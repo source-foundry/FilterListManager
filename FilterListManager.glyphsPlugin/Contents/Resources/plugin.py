@@ -23,18 +23,64 @@ import urlparse
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 
+# -----------------
+# Path definitions
+# -----------------
+# Glyphs application paths
+GLYPHS_PLIST_FILE = os.path.join(
+            os.path.expanduser("~"),
+            "Library",
+            "Application Support",
+            "Glyphs",
+            "CustomFilter.plist",
+        )
+
+
+# FLM plugin paths
+FLM_GLYPHSFILTERS_DIR = os.path.join(os.path.expanduser("~"), "GlyphsFilters")
+FLM_BACKUP_DIR = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "backup")
+FLM_BACKUP_ORIGINAL_FILE = os.path.join(FLM_BACKUP_DIR, "CustomFilters.plist.original")
+FLM_BACKUP_PREVIOUS_FILE = os.path.join(FLM_BACKUP_DIR, "CustomFilters.plist")
+FLM_DEFAULT_PLIST = os.path.join(
+            os.path.expanduser("~"),
+            "Library",
+            "Application Support",
+            "Glyphs",
+            "Plugins",
+            "FilterListManager.glyphsPlugin",
+            "Contents",
+            "Resources",
+            "CustomFilter.plist",
+        )
+FLM_LOG_DIR = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "logs")
+FLM_LOG_FILE = os.path.join(FLM_LOG_DIR, "flm.log")
+FLM_REMOTE_DEF_FILE = os.path.join(
+            os.path.expanduser("~"), "GlyphsFilters", "remote", "defs.txt"
+        )
+
+# ---------------
 # Logging setup
-log_dir = os.path.join(os.path.expanduser("~"), "GlyphsFilters", "logs")
-log_path = os.path.join(log_dir, "flm.log")
-if not os.path.isdir(log_dir):
-    os.makedirs(log_dir)
+# ---------------
+if not os.path.isdir(FLM_LOG_DIR):
+    os.makedirs(FLM_LOG_DIR)
 logging.basicConfig(
-    filename=log_path,
+    filename=FLM_LOG_FILE,
     filemode="w",
     format="%(asctime)s %(levelname)s  %(message)s",
     datefmt="%m/%d/%Y %I:%M:%S %p",
     level=logging.DEBUG,
 )
+
+# ----------------------------
+# CustomFilters.plist backup
+# ----------------------------
+# Backup CustomFilters.plist file present at the time of
+# plugin installation (to avoid permanent elimination of
+# custom filters that user created before plugin use)
+if not os.path.isfile(FLM_BACKUP_ORIGINAL_FILE):
+    if not os.path.isdir(FLM_BACKUP_DIR):
+        os.makedirs(FLM_BACKUP_DIR)
+    shutil.copy(GLYPHS_PLIST_FILE, FLM_BACKUP_ORIGINAL_FILE)
 
 
 class FilterListManager(GeneralPlugin):
@@ -92,21 +138,12 @@ class FilterListManager(GeneralPlugin):
         if not self.filter_directory_is_present():
             Glyphs.showNotification(
                 "Filter List Manager",
-                "ERROR: Unable to locate GlyphsFilters directory!",
+                "ERROR: Unable to locate ~/GlyphsFilters directory! See log.",
             )
             logging.error(
                 "Unable to locate the ~/GlyphsFilters directory.  This directory is mandatory for execution.  Please create it!"
             )
             return 0
-
-        # define the Glyphs CustomFilters.plist file path for reads/writes
-        plist_path = os.path.join(
-            os.path.expanduser("~"),
-            "Library",
-            "Application Support",
-            "Glyphs",
-            "CustomFilter.plist",
-        )
 
         # --------------------------------------------
         #
@@ -114,11 +151,11 @@ class FilterListManager(GeneralPlugin):
         #
         # --------------------------------------------
 
-        # read original CustomFilters.plist definition file
+        # read previous CustomFilters.plist definition file
         #  - used to prepare backup
         #  - used to define new definition file
         try:
-            previous_plist_data = plistlib.readPlist(plist_path)
+            previous_plist_data = plistlib.readPlist(GLYPHS_PLIST_FILE)
         except Exception as e:
             Glyphs.showNotification(
                 "Filter List Manager",
@@ -132,26 +169,21 @@ class FilterListManager(GeneralPlugin):
 
         new_plist_list = []  # storage data structure for new plist file definitions
 
-        previous_plist_backup_dir = os.path.join(
-            os.path.expanduser("~"), "GlyphsFilters", "backup"
-        )
-        previous_plist_backup_path = os.path.join(
-            previous_plist_backup_dir, "CustomFilter.plist"
-        )
-
+        # backup the existing CustomFilters.plist file in the
+        # ~/GlyphsFilters/backup directory
         try:
-            if os.path.exists(previous_plist_backup_dir):
-                shutil.move(plist_path, previous_plist_backup_path)
+            if os.path.exists(FLM_BACKUP_DIR):
+                shutil.move(GLYPHS_PLIST_FILE, FLM_BACKUP_PREVIOUS_FILE)
             else:
-                os.makedirs(previous_plist_backup_dir)
-                shutil.move(plist_path, previous_plist_backup_path)
+                os.makedirs(FLM_BACKUP_DIR)
+                shutil.move(GLYPHS_PLIST_FILE, FLM_BACKUP_PREVIOUS_FILE)
         except Exception as e:
             Glyphs.showNotification(
                 "Filter List Manager",
-                "ERROR: Unable to backup original CustomFilters.plist file. See log.",
+                "ERROR: Unable to backup your CustomFilters.plist file. See log.",
             )
             logging.error(
-                "Unable to backup original CustomFilters.plist file. Error: " + str(e)
+                "Unable to backup your CustomFilters.plist file. Error: " + str(e)
             )
             return 1
 
@@ -234,16 +266,21 @@ class FilterListManager(GeneralPlugin):
                     )
             else:
                 new_plist_list.append(previous_definition)
+                if "name" in previous_definition:
+                    logging.info("Saving previously defined CustomFilters.plist data with name '" + previous_definition["name"] + "'")
 
         # add new data that was read from local and remote
         # definition files to a data format that translates
         # to a plist file
         for new_definition in plist_filter_definitions_list:
             new_plist_list.append(new_definition)
+            if "name" in new_definition:
+                logging.info("Adding new filter list '" + new_definition["name"] + "'")
 
         # write new CustomFilters.plist definition file to disk
         try:
-            plistlib.writePlist(new_plist_list, plist_path)
+            plistlib.writePlist(new_plist_list, GLYPHS_PLIST_FILE)
+            logging.info("The new CustomFilter.plist file write was successful.")
         except Exception as e:
             Glyphs.showNotification(
                 "Filter List Manager",
@@ -287,8 +324,8 @@ class FilterListManager(GeneralPlugin):
         )
         # copy the default definitions to the Glyphs application
         try:
-            default_filters = plistlib.readPlist(read_path)
-            plistlib.writePlist(default_filters, write_path)
+            default_filters = plistlib.readPlist(FLM_DEFAULT_PLIST)
+            plistlib.writePlist(default_filters, GLYPHS_PLIST_FILE)
         except Exception as e:
             Glyphs.showNotification(
                 "Filter List Manager",
@@ -309,8 +346,7 @@ class FilterListManager(GeneralPlugin):
 
     def open_glyphsfilters_directory(self, sender):
         """Called from a plugin Edit menu item and opens the ~/GlyphsFilters directory in the macOS Finder"""
-        glyphs_filters_dirpath = os.path.join(os.path.expanduser("~"), "GlyphsFilters")
-        if not os.path.isdir(glyphs_filters_dirpath):
+        if not os.path.isdir(FLM_GLYPHSFILTERS_DIR):
             Glyphs.showNotification(
                 "Filter List Manager",
                 "Unable to find ~/GlyphsFilters directory. Please create this path.",
@@ -319,14 +355,14 @@ class FilterListManager(GeneralPlugin):
                 "Unable to find the ~/GlyphsFilters directory.  Please create this directory path."
             )
         else:
-            subprocess.call(["open", glyphs_filters_dirpath])
+            subprocess.call(["open", FLM_GLYPHSFILTERS_DIR])
             logging.info(
                 "The ~/GlyphsFilters directory was opened with the Edit menu item."
             )
 
     def filter_directory_is_present(self):
         """Tests for presence of the ~/GlyphsFilters directory"""
-        if not os.path.isdir(os.path.join(os.path.expanduser("~"), "GlyphsFilters")):
+        if not os.path.isdir(FLM_GLYPHSFILTERS_DIR):
             return False
         else:
             return True
@@ -335,17 +371,15 @@ class FilterListManager(GeneralPlugin):
         """Reads and launches parsing of local definition files, returns a Python list of
            Filter objects that are created from the parse"""
         local_definitions_list = []
-        filter_definition_dir_path = os.path.join(
-            os.path.expanduser("~"), "GlyphsFilters"
-        )
-        if not os.path.isdir(filter_definition_dir_path):
+
+        if not os.path.isdir(FLM_GLYPHSFILTERS_DIR):
             # return an empty list if the directory is not found
             return []
 
         raw_definitions_file_list = [
             f
-            for f in os.listdir(filter_definition_dir_path)
-            if os.path.isfile(os.path.join(filter_definition_dir_path, f))
+            for f in os.listdir(FLM_GLYPHSFILTERS_DIR)
+            if os.path.isfile(os.path.join(FLM_GLYPHSFILTERS_DIR, f))
         ]
         definitions_file_list = []
         # filter list for dotfiles.  This eliminates macOS .DS_Store files that lead to errors during processing
@@ -358,7 +392,7 @@ class FilterListManager(GeneralPlugin):
             definition_path_list = definition_file.split(".")
             # define the filter list name as the file name
             new_filter = Filter(definition_path_list[0])
-            with open(os.path.join(filter_definition_dir_path, definition_file)) as f:
+            with open(os.path.join(FLM_GLYPHSFILTERS_DIR, definition_file)) as f:
                 # define the filter object with the definitions in the text data
                 text = f.read()
                 new_filter.define_list_with_newline_delimited_text(text)
@@ -371,13 +405,11 @@ class FilterListManager(GeneralPlugin):
         """Pulls, reads, and launches parsing of remote definition files, returns a Python list of
            Filter objects that are created from the parse"""
         remote_definitions_list = []
-        remote_filter_definitions_path = os.path.join(
-            os.path.expanduser("~"), "GlyphsFilters", "remote", "defs.txt"
-        )
-        if not os.path.isfile(remote_filter_definitions_path):
+
+        if not os.path.isfile(FLM_REMOTE_DEF_FILE):
             return []
 
-        with open(remote_filter_definitions_path) as f:
+        with open(FLM_REMOTE_DEF_FILE) as f:
             for line in f:
                 url = line.strip()
                 if len(url) == 0:
