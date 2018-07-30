@@ -97,7 +97,7 @@ https://raw.githubusercontent.com/source-foundry/charset-filters/master/Mac-Roma
 https://raw.githubusercontent.com/source-foundry/charset-filters/master/MES-1.txt
 ```  
 
-Please note in the above example that you must use the URL for the "Raw" text file if you push your definition files to Github.  This is formatted as `https://raw.githubusercontent.com/[account]/[project name]/[branch]/[filename]`. When you enter this URL in your browser you should see only the text file with no Github website UI around it.  If you see the Github UI in the browser window, the URL that you are viewing points to HTML text and this will lead to errors during the FLM plugin update attempt.
+Please note in the above example that you must use the URL for the "Raw" text file if you push your definition files to Github.  This is formatted as `https://raw.githubusercontent.com/[account]/[project name]/[branch]/[filename]`. When you enter this URL in your browser you should see only the text file with no Github website UI around it.  If you see the Github UI in the browser window, the URL that you are viewing points to HTML text and this will lead to errors during the FLM filter list update attempt.
 
 ## Plugin Usage
 
