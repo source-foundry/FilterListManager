@@ -1,6 +1,10 @@
 ## Changelog
 
-# 0.4.0
+### 0.4.1
+
+- removed undefined German string localizations for Edit menu items
+
+### 0.4.0
 
 - initial release
 - added automated backup of user's CustomFilters.plist file at the time of plugin install to prevent loss of custom filters
