@@ -118,7 +118,7 @@ Select the Restore Default Filter Lists menu item to restore a default set of fi
 
 ### Open GlyphsFilters Directory Menu Item
 
-Select the Open GlyphsFilters Directory menu item to open the `~/GlyphsFilters` directory in the macOS Finder.  The `~/GlyphsFilters` directory is the location where you store local filter list definition files and remote definition files.  This directory also includes application logs that can be used to explore what happened during processing or evaluate errors, and backups of the `CustomFilters.plist` definition file at the time of plugin install and just prior to the last FLM plugin filter list update run.
+Select the Open GlyphsFilters Directory menu item to open the `~/GlyphsFilters` directory in the macOS Finder.  The `~/GlyphsFilters` directory is the location where you store local filter list definition files and remote definition files.  This directory also includes application logs that can be used to explore what happened during processing or evaluate errors. Lastly, and importantly, the directory includes backups of the `CustomFilters.plist` definition file at the time of plugin install and just prior to the last FLM plugin filter list update run so that you can recover any lost data.
 
 
 ## Contributing
