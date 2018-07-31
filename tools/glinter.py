@@ -12,6 +12,28 @@
 #
 # ===========================================================
 
+# USAGE
+#
+# This script is dependent upon the Python 3 interpreter.  If a Python 3 interpreter
+# is not available on your system, please see the Python documentation at
+# https://www.python.org/downloads/ for instructions on how to install it.
+#
+#
+# Execute the script from any directory on your system by passing one or more
+# filepath arguments to local filter list definition files on your system:
+#
+#    $ python3 glinter.py [filepath 1] [filepath ...]
+#
+# The script tests each glyph name listed in the definition file vs.
+# the Glyphs application GlyphData.xml file.  The glyph name is tested
+# against:
+#   - Glyphs-defined nice names (AGL style names)
+#   - Glyphs-defined Unicode hexadecimal style names (e.g, uniXXXX, uXXXXX)
+#   - common alternate names -- if found, the above two glyph names are suggested
+#
+# If the glyph name is not found in the above set of lists, the script will raise
+# an error and identify the definition file path where the error was found.
+
 import os
 import sys
 import xml.etree.ElementTree as ET
