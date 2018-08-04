@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# ===========================================================
+# ==============================================================
 #
 #
 #   glinter.py
-#   Glyph name testing script (vs. Glyphs app defined names)
+#   Glyph name testing script (vs. GlyphData.xml defined names)
 #   Copyright 2018 Christopher Simpkins
 #   Apache License 2.0
 #
+#   Version 0.2.0
 #
-# ===========================================================
+# ==============================================================
 
 # USAGE
 #
@@ -171,35 +172,23 @@ def main(argv):
                             if not uni_name == a_glyph.production:
                                 sys.stderr.write(" --> " + uni_name + os.linesep)
             else:
-                if len(glyph_name) == 4:
-                    uni_name = "uni" + glyph_name
-                    if uni_name in unicode_set:
+                # test for `uniXXXX` and `uXXXXX` unicode hexadecimal style glyph names
+                # in the set of production names
+                if len(glyph_name) == 6 or len(glyph_name) == 7:
+                    if glyph_name in production_set:
                         pass
                     else:
                         sys.stderr.write(
                             "'"
                             + glyph_name
-                            + "' is an invalid glyph name!"
-                            + os.linesep
-                        )
-                        ANY_ERROR_DETECTED = True
-                        FILTER_ERROR_DETECTED = True
-                elif len(glyph_name) == 5:
-                    uni_name = "u" + glyph_name
-                    if uni_name in unicode_set:
-                        pass
-                    else:
-                        sys.stderr.write(
-                            "'"
-                            + glyph_name
-                            + "' is an invalid glyph name!"
+                            + "' does not appear to be a valid glyph name!"
                             + os.linesep
                         )
                         ANY_ERROR_DETECTED = True
                         FILTER_ERROR_DETECTED = True
                 else:
                     sys.stderr.write(
-                        "'" + glyph_name + "' is an invalid glyph name!" + os.linesep
+                        "'" + glyph_name + "' does not appear to be a valid glyph name!" + os.linesep
                     )
                     ANY_ERROR_DETECTED = True
                     FILTER_ERROR_DETECTED = True
