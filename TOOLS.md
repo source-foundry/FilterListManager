@@ -45,7 +45,7 @@ The script reformats the file in place and saves a backup of the in-file on the 
 
 ### `glinter.py`
 
-The `glinter.py` script tests filter list definition files against glyph names that are defined by the Glyphs application in the GlyphData.xml file.  These tests include any modifications that you've made to the GlyphData.xml data to define new glyph names.  The intent is to permit you to confirm that the glyph names that you specified in your definition list will be properly recognized and imported into the Glyphs application, and permit you to use the builtin Glyphs application functionality for these Unicode code points.
+The `glinter.py` script tests filter list definition files against glyph names that are defined by the Glyphs application in the GlyphData.xml file.  These tests include any modifications that you've made to the GlyphData.xml data to define new glyph names.  The intent is to permit you to confirm that the glyph names that you specified in your definition list will be properly recognized and imported into the Glyphs application for use.
 
 The tests that are performed include:
 
