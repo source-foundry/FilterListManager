@@ -188,7 +188,10 @@ def main(argv):
                         FILTER_ERROR_DETECTED = True
                 else:
                     sys.stderr.write(
-                        "'" + glyph_name + "' does not appear to be a valid glyph name!" + os.linesep
+                        "'"
+                        + glyph_name
+                        + "' does not appear to be a valid glyph name!"
+                        + os.linesep
                     )
                     ANY_ERROR_DETECTED = True
                     FILTER_ERROR_DETECTED = True
