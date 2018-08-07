@@ -36,6 +36,7 @@
 # an error and identify the definition file path where the error was found.
 
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -138,6 +139,7 @@ def main(argv):
         )
         sys.exit(1)
 
+    # BEGIN TESTS
     ANY_ERROR_DETECTED = False
     for a_filter in filter_list:
         FILTER_ERROR_DETECTED = False
@@ -181,6 +183,32 @@ def main(argv):
                 ANY_ERROR_DETECTED = True
                 FILTER_ERROR_DETECTED = True
 
+            # BEGIN non-GlyphData.xml tests
+            if FILTER_ERROR_DETECTED is False:
+                # https://github.com/adobe-type-tools/afdko/blob/develop/docs/OpenTypeFeatureFileSpecification.html
+                # glyph name length
+                if len(glyph_name) > 63:
+                    sys.stderr.write(
+                        "'" + glyph_name + "' is too long! (> 63 characters)"
+                    )
+                    FILTER_ERROR_DETECTED = True
+                    ANY_ERROR_DETECTED = True
+                # glyph name starts with period outside of defined positions (including .null defined in GlyphData.xml)
+                if glyph_name[0] == "." and (glyph_name not in (".notdef", ".null")):
+                    sys.stderr.write(
+                        "'" + glyph_name + "' includes an invalid leading period!"
+                    )
+                    FILTER_ERROR_DETECTED = True
+                    ANY_ERROR_DETECTED = True
+
+                # glyph name contains valid characters
+                if not has_valid_characters(glyph_name):
+                    sys.stderr.write(
+                        "'" + glyph_name + "' contains invalid characters!" + os.linesep
+                    )
+                    FILTER_ERROR_DETECTED = True
+                    ANY_ERROR_DETECTED = True
+
         if FILTER_ERROR_DETECTED is True:
             sys.stderr.write("[ERROR] --> " + a_filter.name + os.linesep)
 
@@ -189,6 +217,18 @@ def main(argv):
     else:
         print("All tests passed!")
         sys.exit(0)
+
+
+def has_valid_characters(glyph_name):
+    """Tests for presence of valid characters in a glyph name as specified by the Adobe
+       OpenType Feature File specification.  The test here includes characters
+       specified for 'development' names, a broader set than the production name
+       definition
+
+       https://github.com/adobe-type-tools/afdko/blob/develop/docs/OpenTypeFeatureFileSpecification.html"""
+    valid_characters = r"^[A-Za-z0-9\._\*\+\-\:\^\|\~]{1,63}$"
+    regex = re.compile(valid_characters)
+    return re.match(regex, glyph_name)
 
 
 if __name__ == "__main__":
