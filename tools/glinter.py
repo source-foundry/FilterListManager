@@ -9,7 +9,7 @@
 #   Copyright 2018 Christopher Simpkins
 #   Apache License 2.0
 #
-#   Version 0.2.0
+#   Version 0.3.0
 #
 # ==============================================================
 
