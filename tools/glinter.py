@@ -9,7 +9,7 @@
 #   Copyright 2018 Christopher Simpkins
 #   Apache License 2.0
 #
-#   Version 0.3.0
+#   Version 0.3.1
 #
 # ==============================================================
 
@@ -223,6 +223,8 @@ def main(argv):
 
         if FILTER_ERROR_DETECTED is True:
             sys.stderr.write("[ERROR] --> " + a_filter.name + os.linesep)
+        else:
+            print("[OK] " + a_filter.name)
 
     if ANY_ERROR_DETECTED is True:
         sys.exit(1)
