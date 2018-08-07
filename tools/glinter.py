@@ -172,29 +172,14 @@ def main(argv):
                             if not uni_name == a_glyph.production:
                                 sys.stderr.write(" --> " + uni_name + os.linesep)
             else:
-                # test for `uniXXXX` and `uXXXXX` unicode hexadecimal style glyph names
-                # in the set of production names
-                if len(glyph_name) == 6 or len(glyph_name) == 7:
-                    if glyph_name in production_set:
-                        pass
-                    else:
-                        sys.stderr.write(
-                            "'"
-                            + glyph_name
-                            + "' does not appear to be a valid glyph name!"
-                            + os.linesep
-                        )
-                        ANY_ERROR_DETECTED = True
-                        FILTER_ERROR_DETECTED = True
-                else:
-                    sys.stderr.write(
-                        "'"
-                        + glyph_name
-                        + "' does not appear to be a valid glyph name!"
-                        + os.linesep
-                    )
-                    ANY_ERROR_DETECTED = True
-                    FILTER_ERROR_DETECTED = True
+                sys.stderr.write(
+                    "'"
+                    + glyph_name
+                    + "' does not appear to be a valid glyph name!"
+                    + os.linesep
+                )
+                ANY_ERROR_DETECTED = True
+                FILTER_ERROR_DETECTED = True
 
         if FILTER_ERROR_DETECTED is True:
             sys.stderr.write("[ERROR] --> " + a_filter.name + os.linesep)
