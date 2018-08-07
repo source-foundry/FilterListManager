@@ -45,16 +45,36 @@ The script reformats the file in place and saves a backup of the in-file on the 
 
 ### `glinter.py`
 
-The `glinter.py` script tests filter list definition files against glyph names that are defined by the Glyphs application in the GlyphData.xml file.  These tests include any modifications that you've made to the GlyphData.xml data to define new glyph names.  The intent is to permit you to confirm that the glyph names that you specified in your definition list will be properly recognized and imported into the Glyphs application for use.
+The `glinter.py` script tests each glyph name that is specified in one or more filter list definition files against those that are defined in the Glyphs application GlyphData.xml file and the guidelines provided in the [Adobe OpenType Feature File Specification](https://github.com/adobe-type-tools/afdko/blob/develop/docs/OpenTypeFeatureFileSpecification.html) for *development* glyph names.  
 
-The tests that are performed include:
+The Glyphs application specific GlyphData.xml tests include any modifications that you've made to the GlyphData.xml data to define new glyph names.  The intent is to permit you to confirm that the glyph names that you specified in your definition list will be properly recognized and imported into the Glyphs application for use.
 
-1) test to determine if specified glyph name is a Glyphs application nice name
-2) test to determine if specified glyph name is a Glyphs application production name
-3) test to determine if specified glyph name is a Glyphs application alternate name
+The GlyphData.xml tests that are performed include:
+
+1) specified glyph name is a Glyphs application nice name
+2) specified glyph name is a Glyphs application production name
+3) specified glyph name is a Glyphs application alternate name
 
 The glyph name passes if criteria for (1) or (2) are met.  The script suggests conversion to the nice name or production name (with those values!) if criteria for (3) are met.  If there is no match for (1), (2), and (3), the script raises an error and indicates the glyph name and file path to the definition file.
 
+The Adobe OpenType Feature File Specification tests that are performed include:
+
+1) glyph name is under 63 characters in length
+2) glyph name does not start with a period (except ".null" and ".notdef")
+3) glyph name only includes characters in the set:
+    - `A-Z`
+    - `a-z`
+    - `0-9`
+    - `.` (period)
+    - `_` (underscore)
+    - `*` (asterisk)
+    - `+` (plus sign)
+    - `-` (hyphen)
+    - `:` (colon)
+    - `^` (circumflex accent)
+    - `|` (vertical bar)
+    - `~` (tilde)
+    
 #### Usage
 
 Download the script file from the FLM repository and execute it from any directory on your macOS system.  Include one or more file paths to local definition files as arguments to the script:
