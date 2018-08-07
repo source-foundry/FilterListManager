@@ -59,7 +59,7 @@ The glyph name passes if criteria for (1) or (2) are met.  The script suggests c
 
 The Adobe OpenType Feature File Specification tests that are performed include:
 
-1) glyph name is under 63 characters in length
+1) glyph name is 63 characters or less in length
 2) glyph name does not start with a period (except ".null" and ".notdef")
 3) glyph name only includes characters in the set:
     - `A-Z`
