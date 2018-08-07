@@ -5,7 +5,7 @@
 #
 #
 #   glinter.py
-#   Glyph name testing script (vs. GlyphData.xml defined names)
+#   Glyph name validity testing script
 #   Copyright 2018 Christopher Simpkins
 #   Apache License 2.0
 #
@@ -26,14 +26,26 @@
 #    $ python3 glinter.py [filepath 1] [filepath ...]
 #
 # The script tests each glyph name listed in the definition file vs.
-# the Glyphs application GlyphData.xml file.  The glyph name is tested
-# against:
+# the Glyphs application GlyphData.xml file and Adobe OpenType
+# Feature File specification for development glyph names
+#
+# Glyph names are tested against the Glyphs GlyphData.xml file to determine
+# if they are:
 #   - Glyphs-defined nice names (AGL style names)
 #   - Glyphs-defined Unicode hexadecimal style names (e.g, uniXXXX, uXXXXX)
 #   - common alternate names -- if found, the above two glyph names are suggested
 #
 # If the glyph name is not found in the above set of lists, the script will raise
 # an error and identify the definition file path where the error was found.
+#
+# For glyph names that pass the above tests, the following additional tests
+# that are based upon the Adobe OT Feature File spec are performed:
+#    - glyph name < 64 characters in length
+#    - glyph name does not contain a leading period (except .notdef and .null)
+#    - glyph name contains valid characters for development glyph names
+#
+# Adobe reference:
+#  https://github.com/adobe-type-tools/afdko/blob/develop/docs/OpenTypeFeatureFileSpecification.html
 
 import os
 import re
