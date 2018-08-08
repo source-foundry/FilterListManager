@@ -9,7 +9,7 @@
 #   Copyright 2018 Christopher Simpkins
 #   Apache License 2.0
 #
-#   Version 0.1.0
+#   Version 0.1.1
 #
 # ==============================================================
 
@@ -118,16 +118,14 @@ def main(argv):
                         outfile_list.append(
                             get_comment_string(glyphlist, name=glyph_name)
                         )
-                        outfile_list.append(glyph_name)
-                        outfile_list.append(os.linesep)
+                        outfile_list.append(glyph_name + os.linesep)
                     elif glyph_name in production_set:
                         outfile_list.append(
                             get_comment_string(glyphlist, production=glyph_name)
                         )
-                        outfile_list.append(glyph_name)
-                        outfile_list.append(os.linesep)
+                        outfile_list.append(glyph_name + os.linesep)
                     else:
-                        outfile_list.append(glyph_name)
+                        outfile_list.append(glyph_name + os.linesep)
 
         # backup file to originalpath with ".pre" suffix
         backup_filepath = filepath + ".pre"
