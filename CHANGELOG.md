@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.5.0
+
+- German menu item localization (thanks JM!)
+
 ### 0.4.1
 
 - removed undefined German string localizations for Edit menu items
