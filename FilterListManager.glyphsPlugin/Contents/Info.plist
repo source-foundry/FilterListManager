@@ -17,15 +17,15 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleVersion</key>
-	<string>41</string>
+	<string>50</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.4.1</string>
+	<string>0.5.0</string>
 	<key>UpdateFeedURL</key>
 	<string>https://raw.githubusercontent.com/source-foundry/FilterListManager/master/FilterListManager.glyphsPlugin/Contents/Info.plist</string>
 	<key>productPageURL</key>
 	<string>https://github.com/source-foundry/FilterListManager</string>
 	<key>productReleaseNotes</key>
-	<string>Removed undefined German string localizations</string>
+	<string>Changelog: https://github.com/source-foundry/FilterListManager/blob/master/CHANGELOG.md</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2018 Christopher Simpkins, Apache License 2.0</string>
 	<key>NSPrincipalClass</key>
