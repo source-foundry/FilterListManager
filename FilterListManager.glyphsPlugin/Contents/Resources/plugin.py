@@ -85,15 +85,23 @@ if not os.path.isfile(FLM_BACKUP_ORIGINAL_FILE):
 
 class FilterListManager(GeneralPlugin):
     def settings(self):
-        # TODO: localize menu items to non-English languages
         self.update_name = Glyphs.localize(
-            {"en": u"Update Filter Lists"}
+            {
+                "en": u"Update Filter Lists",
+                "de": u"Filterlisten aktualisieren"
+            }
         )
         self.restoredefault_name = Glyphs.localize(
-            {"en": u"Restore Default Filter Lists"}
+            {
+                "en": u"Restore Default Filter Lists",
+                "de": u"Standard-Filterlisten wiederherstellen",
+            }
         )
         self.opendir_name = Glyphs.localize(
-            {"en": u"Open GlyphsFilters Directory"}
+            {
+                "en": u"Open GlyphsFilters Directory",
+                "de": u"Verzeichnis GlyphsFilters öffnen",
+            }
         )
 
     def start(self):
