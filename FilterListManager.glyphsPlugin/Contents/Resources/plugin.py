@@ -1,6 +1,7 @@
 # encoding: utf-8
+from __future__ import division, print_function, unicode_literals
 
-# ##########################################################################################################
+###########################################################################################################
 #
 #
 #   Filter List Manager
@@ -9,7 +10,7 @@
 #   Apache License 2.0
 #
 #
-# ##########################################################################################################
+###########################################################################################################
 
 import logging
 import objc
@@ -17,8 +18,12 @@ import os
 import plistlib
 import shutil
 import subprocess
-import urllib2
-import urlparse
+try:
+	import urllib2 as urllibrequest
+	import urlparse as urllibparse
+except:
+	import urllib.request as urllibrequest
+	import urllib.parse as urllibparse
 
 from GlyphsApp import *
 from GlyphsApp.plugins import *
@@ -84,45 +89,43 @@ if not os.path.isfile(FLM_BACKUP_ORIGINAL_FILE):
 
 
 class FilterListManager(GeneralPlugin):
+    @objc.python_method
     def settings(self):
         self.update_name = Glyphs.localize(
             {
-                "en": u"Update Filter Lists",
-                "de": u"Filterlisten aktualisieren"
+                "en": "Update Filter Lists",
+                "de": "Filterlisten aktualisieren"
             }
         )
         self.restoredefault_name = Glyphs.localize(
             {
-                "en": u"Restore Default Filter Lists",
-                "de": u"Standard-Filterlisten wiederherstellen",
+                "en": "Restore Default Filter Lists",
+                "de": "Standard-Filterlisten wiederherstellen",
             }
         )
         self.opendir_name = Glyphs.localize(
             {
-                "en": u"Open GlyphsFilters Directory",
-                "de": u"Verzeichnis GlyphsFilters öffnen",
+                "en": "Open GlyphsFilters Directory",
+                "de": "Verzeichnis GlyphsFilters öffnen",
             }
         )
 
+    @objc.python_method
     def start(self):
         try:
             # new API in Glyphs 2.3.1-910
-            new_update_menu_item = NSMenuItem(self.update_name, self.update_filters)
-            new_restore_menu_item = NSMenuItem(
-                self.restoredefault_name, self.restore_filters
-            )
-            new_opendir_menu_item = NSMenuItem(
-                self.opendir_name, self.open_glyphsfilters_directory
-            )
+            new_update_menu_item = NSMenuItem(self.update_name, self.updateFilters_)
+            new_restore_menu_item = NSMenuItem(self.restoredefault_name, self.restoreFilters_)
+            new_opendir_menu_item = NSMenuItem(self.opendir_name, self.openGlyphsfiltersDirectory_)
             Glyphs.menu[EDIT_MENU].append(new_update_menu_item)
             Glyphs.menu[EDIT_MENU].append(new_restore_menu_item)
             Glyphs.menu[EDIT_MENU].append(new_opendir_menu_item)
         except Exception:
             main_menu = Glyphs.mainMenu()
-            update_selector = objc.selector(self.update_filters, signature="v@:@")
-            restore_selector = objc.selector(self.restore_filters, signature="v@:@")
+            update_selector = objc.selector(self.updateFilters_, signature="v@:@")
+            restore_selector = objc.selector(self.restoreFilters_, signature="v@:@")
             open_selector = objc.selector(
-                self.open_glyphsfilters_directory, signature="v@:@"
+                self.openGlyphsfiltersDirectory_, signature="v@:@"
             )
             new_update_menu_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(
                 self.update_name, update_selector, ""
@@ -140,7 +143,7 @@ class FilterListManager(GeneralPlugin):
             new_open_menu_item.setTarget_(self)
             main_menu.itemWithTag_(5).submenu().addItem_(new_open_menu_item)
 
-    def update_filters(self, sender):
+    def updateFilters_(self, sender):
         """Perform the list filter update"""
         # Expected filter definitions directory test
         if not self.filter_directory_is_present():
@@ -311,7 +314,7 @@ class FilterListManager(GeneralPlugin):
             "The filter list updates were successful.  Please quit and restart the Glyphs application to view the new filter lists."
         )
 
-    def restore_filters(self, sender):
+    def restoreFilters_(self, sender):
         """Perform restore of default list filters"""
         # copy the default definitions to the Glyphs application
         try:
@@ -335,7 +338,7 @@ class FilterListManager(GeneralPlugin):
             "The default filter list restoration was successful.  Please quit and restart the Glyphs application to view the filter lists."
         )
 
-    def open_glyphsfilters_directory(self, sender):
+    def openGlyphsfiltersDirectory_(self, sender):
         """Called from a plugin Edit menu item and opens the ~/GlyphsFilters directory in the macOS Finder"""
         if not os.path.isdir(FLM_GLYPHSFILTERS_DIR):
             Glyphs.showNotification(
@@ -351,6 +354,7 @@ class FilterListManager(GeneralPlugin):
                 "The ~/GlyphsFilters directory was opened with the Edit menu item."
             )
 
+    @objc.python_method
     def filter_directory_is_present(self):
         """Tests for presence of the ~/GlyphsFilters directory"""
         if not os.path.isdir(FLM_GLYPHSFILTERS_DIR):
@@ -358,6 +362,7 @@ class FilterListManager(GeneralPlugin):
         else:
             return True
 
+    @objc.python_method
     def get_local_filter_definitions_list(self):
         """Reads and launches parsing of local definition files, returns a Python list of
            Filter objects that are created from the parse"""
@@ -392,6 +397,7 @@ class FilterListManager(GeneralPlugin):
 
         return local_definitions_list
 
+    @objc.python_method
     def get_remote_filter_definitions_list(self):
         """Pulls, reads, and launches parsing of remote definition files, returns a Python list of
            Filter objects that are created from the parse"""
@@ -410,20 +416,21 @@ class FilterListManager(GeneralPlugin):
                 else:
                     # unquote URL defined in list to define file name
                     # (in case the user pasted a urlencoded string)
-                    decoded_url = urllib2.unquote(url)
-                    parsed_url = urlparse.urlparse(decoded_url).path
+                    decoded_url = urllibparse.unquote(url)
+                    parsed_url = urllibparse.urlparse(decoded_url).path
                     parsed_path = os.path.split(parsed_url)
                     filter_defintion_filename = parsed_path[1]
                     new_filter = Filter(filter_defintion_filename)
 
                     # quote URL defined in list to make HTTP GET request
-                    response = urllib2.urlopen(url)
+                    response = urllibrequest.urlopen(url)
                     text = response.read()
                     new_filter.define_list_with_newline_delimited_text(text)
                     remote_definitions_list.append(new_filter)
 
         return remote_definitions_list
 
+    @objc.python_method
     def __file__(self):
         """Glyphs plugin API specific method. Please leave this method unchanged"""
         return __file__
