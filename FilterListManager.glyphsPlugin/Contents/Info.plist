@@ -3,9 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleDisplayName</key>
-	<string>Filter List Manager</string>
+	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>plugin</string>
 	<key>CFBundleIdentifier</key>
@@ -14,12 +12,10 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>FilterListManager</string>
-	<key>CFBundlePackageType</key>
-	<string>BNDL</string>
-	<key>CFBundleVersion</key>
-	<string>50</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.5.0</string>
+	<string>0.5.1</string>
+	<key>CFBundleVersion</key>
+	<string>51</string>
 	<key>UpdateFeedURL</key>
 	<string>https://raw.githubusercontent.com/source-foundry/FilterListManager/master/FilterListManager.glyphsPlugin/Contents/Info.plist</string>
 	<key>productPageURL</key>
@@ -30,9 +26,5 @@
 	<string>Copyright 2018 Christopher Simpkins, Apache License 2.0</string>
 	<key>NSPrincipalClass</key>
 	<string>FilterListManager</string>
-	<key>PyMainFileNames</key>
-	<array>
-		<string>../MacOS/main.py</string>
-	</array>
 </dict>
 </plist>
