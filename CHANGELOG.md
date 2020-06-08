@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.6.0
+
+- updated for new Glyphs application plugin format
+- Python 3 support
+
 ### 0.5.0
 
 - German menu item localization (thanks JM!)
