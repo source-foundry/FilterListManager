@@ -82,11 +82,13 @@ logging.basicConfig(
 # Backup CustomFilters.plist file present at the time of
 # plugin installation (to avoid permanent elimination of
 # custom filters that user created before plugin use)
-if not os.path.isfile(FLM_BACKUP_ORIGINAL_FILE):
-    if not os.path.isdir(FLM_BACKUP_DIR):
-        os.makedirs(FLM_BACKUP_DIR)
-    shutil.copy(GLYPHS_PLIST_FILE, FLM_BACKUP_ORIGINAL_FILE)
-
+try:
+    if not os.path.isfile(FLM_BACKUP_ORIGINAL_FILE) and os.path.isfile(GLYPHS_PLIST_FILE):
+        if not os.path.isdir(FLM_BACKUP_DIR):
+            os.makedirs(FLM_BACKUP_DIR)
+        shutil.copy(GLYPHS_PLIST_FILE, FLM_BACKUP_ORIGINAL_FILE)
+except:
+    pass
 
 class FilterListManager(GeneralPlugin):
     @objc.python_method
